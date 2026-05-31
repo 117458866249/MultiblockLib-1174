@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "multiblocklibes:block/test_fe_port"
+    },
+    "facing=east": {
+      "model": "multiblocklibes:block/test_fe_port",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "multiblocklibes:block/test_fe_port",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "multiblocklibes:block/test_fe_port",
+      "y": 270
+    },
+    "facing=down": {
+      "model": "multiblocklibes:block/test_fe_port",
+      "x": 90
+    },
+    "facing=up": {
+      "model": "multiblocklibes:block/test_fe_port",
+      "x": 270
+    }
+  }
+}

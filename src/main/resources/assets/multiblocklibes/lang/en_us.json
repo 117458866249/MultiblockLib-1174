@@ -1,0 +1,8 @@
+{
+    "requirement.multiblocklib.min.f": "At least ",
+    "requirement.multiblocklib.min.b": " blocks in the structure",
+    "requirement.multiblocklib.max.f": "At most ",
+    "requirement.multiblocklib.max.b": " blocks in the structure",
+    "requirement.multiblocklib.right_count.f": "Just have ",
+    "requirement.multiblocklib.right_count.b": " blocks in the structure"
+}

@@ -1,0 +1,8 @@
+{
+    "requirement.multiblocklib.min.f": "至少 ",
+    "requirement.multiblocklib.min.b": " 个方块在结构中",
+    "requirement.multiblocklib.max.f": "至多 ",
+    "requirement.multiblocklib.max.b": " 个方块在结构中",
+    "requirement.multiblocklib.right_count.f": "正好 ",
+    "requirement.multiblocklib.right_count.b": " 个方块在结构中"
+}
