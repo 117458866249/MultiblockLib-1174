@@ -5,9 +5,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+import net.neoforged.fml.loading.FMLPaths;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -27,6 +29,14 @@ public class Util {
                 pos.getX() + abs.getX(),
                 pos.getY() + abs.getY(),
                 pos.getZ() + abs.getZ()
+        );
+    }
+
+    public static BlockPos getDifPos(BlockPos pos, BlockPos dif) {
+        return new BlockPos(
+                pos.getX() - dif.getX(),
+                pos.getY() - dif.getY(),
+                pos.getZ() - dif.getZ()
         );
     }
 
@@ -102,5 +112,23 @@ public class Util {
             temp.add(block);
         }
         return temp;
+    }
+
+    public static void writeToGameDir(String subPath, String content) throws Exception {
+        Path gameDir = FMLPaths.GAMEDIR.get();
+        Path targetPath = gameDir.resolve(subPath);
+        Files.createDirectories(targetPath.getParent());
+        Files.writeString(targetPath, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    public static BlockPos getDirectionalPos(Direction direction) {
+        return switch (direction) {
+            case UP -> new BlockPos(0, 1, 0);
+            case DOWN -> new BlockPos(0, -1, 0);
+            case NORTH -> new BlockPos(0, 0, -1);
+            case SOUTH -> new BlockPos(0, 0, 1);
+            case EAST -> new BlockPos(1, 0, 0);
+            case WEST -> new BlockPos(-1, 0, 0);
+        };
     }
 }

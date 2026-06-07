@@ -4,5 +4,9 @@
     "requirement.multiblocklib.max.f": "At most ",
     "requirement.multiblocklib.max.b": " blocks in the structure",
     "requirement.multiblocklib.right_count.f": "Just have ",
-    "requirement.multiblocklib.right_count.b": " blocks in the structure"
+    "requirement.multiblocklib.right_count.b": " blocks in the structure",
+
+    "tooltip.multiblocklib.input": "Input Only",
+    "tooltip.multiblocklib.output": "Output Only",
+    "tooltip.multiblocklib.both": "Both Input And Output"
 }

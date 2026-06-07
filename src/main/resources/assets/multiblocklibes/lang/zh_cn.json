@@ -4,5 +4,9 @@
     "requirement.multiblocklib.max.f": "至多 ",
     "requirement.multiblocklib.max.b": " 个方块在结构中",
     "requirement.multiblocklib.right_count.f": "正好 ",
-    "requirement.multiblocklib.right_count.b": " 个方块在结构中"
+    "requirement.multiblocklib.right_count.b": " 个方块在结构中",
+
+    "tooltip.multiblocklib.input": "输入端口",
+    "tooltip.multiblocklib.output": "输出端口",
+    "tooltip.multiblocklib.both": "多用途端口"
 }

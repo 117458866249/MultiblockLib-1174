@@ -3,6 +3,7 @@ package com.qwq117458866249.multiblocklib.common.template.item_port;
 import com.mojang.serialization.MapCodec;
 import com.qwq117458866249.multiblocklib.api.IAbleToForm;
 import com.qwq117458866249.multiblocklib.api.IOMode;
+import com.qwq117458866249.multiblocklib.common.register.Register;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -10,6 +11,8 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import org.jspecify.annotations.Nullable;
@@ -56,7 +59,7 @@ public class ItemPortBlock extends BaseEntityBlock implements IAbleToForm {
     @org.jetbrains.annotations.Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         if (isDirectional()) {
-            return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite()).setValue(FORMED, false);
+            return this.defaultBlockState().setValue(FACING, (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) ? context.getNearestLookingDirection() : context.getNearestLookingDirection().getOpposite()).setValue(FORMED, false);
         } else {
             return this.defaultBlockState().setValue(FORMED, false);
         }
@@ -84,5 +87,10 @@ public class ItemPortBlock extends BaseEntityBlock implements IAbleToForm {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new ItemPortBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
+        return createTickerHelper(type, Register.ITEM_PORT_BE.get(), ItemPortBlockEntity::tick);
     }
 }

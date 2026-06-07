@@ -26,9 +26,9 @@ public class PortBlockItem extends BlockItem {
     public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
         if (hasToolTip()) {
             switch (io) {
-                case INPUT -> builder.accept(Component.literal("Input Only").withColor(0x645fdc));
-                case OUTPUT -> builder.accept(Component.literal("Output Only").withColor(0xeb913e));
-                case BOTH -> builder.accept(Component.literal("Both Input And Output").withColor(0x00f1ff));
+                case INPUT -> builder.accept(Component.translatable("tooltip.multiblocklib.input").withColor(0x645fdc));
+                case OUTPUT -> builder.accept(Component.translatable("tooltip.multiblocklib.output").withColor(0xeb913e));
+                case BOTH -> builder.accept(Component.translatable("tooltip.multiblocklib.both").withColor(0x00f1ff));
             }
         }
     }

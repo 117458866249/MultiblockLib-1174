@@ -86,6 +86,10 @@ public abstract class ControllerBlockEntity extends BlockEntity {
                 Recipe.allRecipes.getOrDefault(parsingRecipe, new EmptyRecipe()).outputRecipe(pos, level, state.getValue(ControllerBlock.FACING), Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()));
                 parsingRecipe = "";
                 tick = 0;
+                if (!Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()).parseAbleRecipe(pos, level, state.getValue(ControllerBlock.FACING), Structure.allStructures.getOrDefault(formedAs, new EmptyStructure())).recipeId().isEmpty()) {
+                    parsingRecipe = Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()).parseAbleRecipe(pos, level, state.getValue(ControllerBlock.FACING), Structure.allStructures.getOrDefault(formedAs, new EmptyStructure())).recipeId();
+                    Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()).parseAbleRecipe(pos, level, state.getValue(ControllerBlock.FACING), Structure.allStructures.getOrDefault(formedAs, new EmptyStructure())).inputRecipe(pos, level, state.getValue(ControllerBlock.FACING), Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()));
+                }
             }
         } else {
             noWork(level, pos);
