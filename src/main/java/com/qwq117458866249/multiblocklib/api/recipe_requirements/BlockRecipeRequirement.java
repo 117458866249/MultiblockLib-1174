@@ -1,5 +1,7 @@
 package com.qwq117458866249.multiblocklib.api.recipe_requirements;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
@@ -13,6 +15,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -89,5 +92,29 @@ public class BlockRecipeRequirement extends RecipeRequirement {
     @Override
     public Component getDesc() {
         return Component.empty();
+    }
+
+    @Override
+    public boolean onlyDetectOnce() {
+        return true;
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allRecipeRequirements.put("block_recipe_requirement", obj -> {
+            ArrayList<String> temp = new ArrayList<>();
+            ((JsonArray) obj[1]).asList().forEach(each -> temp.add(each.getAsString()));
+            return new BlockRecipeRequirement(
+                    IOMode.get(((JsonElement) obj[0]).getAsString()),
+                    temp,
+                    new BlockPos(
+                            ((JsonElement) obj[2]).getAsInt(),
+                            ((JsonElement) obj[3]).getAsInt(),
+                            ((JsonElement) obj[4]).getAsInt()
+                    )
+            );
+        });
     }
 }

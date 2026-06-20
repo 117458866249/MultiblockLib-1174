@@ -1,5 +1,6 @@
 package com.qwq117458866249.multiblocklib.api.recipe_requirements.ports;
 
+import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
@@ -8,7 +9,9 @@ import com.qwq117458866249.multiblocklib.common.template.fe_port.FEPortBlockEnti
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -90,5 +93,23 @@ public class FERecipeRequirement extends RecipeRequirement {
     @Override
     public Component getDesc() {
         return Component.empty();
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allRecipeRequirements.put("fe_recipe_requirement", obj -> {
+            if (obj.length == 3) {
+                return new FERecipeRequirement(
+                        IOMode.get(((JsonElement) obj[0]).getAsString()),
+                        ((JsonElement) obj[1]).getAsInt()
+                ).setPort(BuiltInRegistries.BLOCK.getValue(Identifier.parse(((JsonElement) obj[2]).getAsString())));
+            }
+            return new FERecipeRequirement(
+                    IOMode.get(((JsonElement) obj[0]).getAsString()),
+                    ((JsonElement) obj[1]).getAsInt()
+            );
+        });
     }
 }

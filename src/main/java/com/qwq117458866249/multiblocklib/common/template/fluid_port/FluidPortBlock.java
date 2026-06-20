@@ -28,18 +28,18 @@ import java.util.HashMap;
 
 public class FluidPortBlock extends BaseEntityBlock implements IAbleToForm {
     public static final ArrayList<Block> allThis = new ArrayList<>();
-    public static final HashMap<Block,Integer> allSlotCounts = new HashMap<>();
-    public static final HashMap<Block,Integer> allSize = new HashMap<>();
-    public static final HashMap<Block,IOMode> allIOMode = new HashMap<>();
+    public static final HashMap<Block, Integer> allSlotCounts = new HashMap<>();
+    public static final HashMap<Block, Integer> allSize = new HashMap<>();
+    public static final HashMap<Block, IOMode> allIOMode = new HashMap<>();
     public int eachSlotSize = 0;
 
     public FluidPortBlock(Properties properties, int eachSlotSize, int slotCount, IOMode ioMode) {
         super(properties);
         this.eachSlotSize = eachSlotSize;
-        allIOMode.put(this,ioMode);
+        allIOMode.put(this, ioMode);
         allThis.add(this);
-        allSlotCounts.put(this,slotCount);
-        allSize.put(this,eachSlotSize);
+        allSlotCounts.put(this, slotCount);
+        allSize.put(this, eachSlotSize);
     }
 
     private FluidPortBlock(Properties properties) {

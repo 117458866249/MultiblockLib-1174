@@ -1,5 +1,7 @@
 package com.qwq117458866249.multiblocklib.api.structure_requirements;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.common.recipes.Structure;
 import com.qwq117458866249.multiblocklib.common.recipes.StructureRequirement;
 import com.qwq117458866249.multiblocklib.util.Util;
@@ -64,6 +66,20 @@ public class MinBlocksStructureRequirement extends StructureRequirement {
 
     @Override
     public Component getDesc() {
-        return Component.literal(Component.translatable("requirement.multiblocklib.min.f").getString() + value + Component.translatable("requirement.multiblocklib.min.b").getString());
+        return Component.literal(Component.translatable("requirement.multiblocklib.min.f").getString() + value + " * " + Component.translatable(BuiltInRegistries.BLOCK.getValue(Identifier.parse(blocks.getFirst())).getDescriptionId()) + Component.translatable("requirement.multiblocklib.min.b").getString());
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allStructureRequirements.put("min_blocks_structure_requirement", obj -> {
+            ArrayList<String> temp = new ArrayList<>();
+            ((JsonArray) obj[0]).asList().forEach(each -> temp.add(each.getAsString()));
+            return new MinBlocksStructureRequirement(
+                    temp,
+                    ((JsonElement) obj[1]).getAsInt()
+            );
+        });
     }
 }

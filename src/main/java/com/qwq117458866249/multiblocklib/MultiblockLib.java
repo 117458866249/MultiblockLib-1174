@@ -1,5 +1,10 @@
 package com.qwq117458866249.multiblocklib;
 
+import com.qwq117458866249.multiblocklib.api.recipe_requirements.*;
+import com.qwq117458866249.multiblocklib.api.recipe_requirements.ports.FERecipeRequirement;
+import com.qwq117458866249.multiblocklib.api.recipe_requirements.ports.FluidRecipeRequirement;
+import com.qwq117458866249.multiblocklib.api.recipe_requirements.ports.ItemRecipeRequirement;
+import com.qwq117458866249.multiblocklib.api.structure_requirements.*;
 import com.qwq117458866249.multiblocklib.common.register.Register;
 import org.slf4j.Logger;
 
@@ -25,5 +30,20 @@ public class MultiblockLib {
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
+        FERecipeRequirement.register();
+        FluidRecipeRequirement.register();
+        ItemRecipeRequirement.register();
+        BlockRecipeRequirement.register();
+        CommandRecipeRequirement.register();
+        DescRecipeRequirement.register();
+        MaxBlocksRecipeRequirement.register();
+        MinBlocksRecipeRequirement.register();
+        RightCountBlocksRecipeRequirement.register();
+
+        DescStructureRequirement.register();
+        MaxBlocksStructureRequirement.register();
+        MinBlocksStructureRequirement.register();
+        RightCountBlockStructureRequirement.register();
+        SameBlockStructureRequirement.register();
     }
 }

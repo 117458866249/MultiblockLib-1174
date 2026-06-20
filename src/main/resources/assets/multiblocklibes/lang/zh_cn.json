@@ -1,12 +1,20 @@
 {
     "requirement.multiblocklib.min.f": "至少 ",
-    "requirement.multiblocklib.min.b": " 个方块在结构中",
+    "requirement.multiblocklib.min.b": " 在结构中",
     "requirement.multiblocklib.max.f": "至多 ",
-    "requirement.multiblocklib.max.b": " 个方块在结构中",
+    "requirement.multiblocklib.max.b": " 在结构中",
     "requirement.multiblocklib.right_count.f": "正好 ",
-    "requirement.multiblocklib.right_count.b": " 个方块在结构中",
+    "requirement.multiblocklib.right_count.b": " 在结构中",
 
     "tooltip.multiblocklib.input": "输入端口",
     "tooltip.multiblocklib.output": "输出端口",
-    "tooltip.multiblocklib.both": "多用途端口"
+    "tooltip.multiblocklib.both": "多用途端口",
+
+    "key.multiblocklib.formedas": "成型结构：",
+    "key.multiblocklib.none": "无",
+    "key.multiblocklib.progress": "处理进度：",
+    "key.multiblocklib.parsespeed": "处理速率：",
+    "key.multiblocklib.parallels": "最大并行数：",
+    "key.multiblock.structure": "多方块结构",
+    "key.multiblockes.recipe": "多方块配方"
 }

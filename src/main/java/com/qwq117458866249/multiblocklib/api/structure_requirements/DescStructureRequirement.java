@@ -1,5 +1,6 @@
 package com.qwq117458866249.multiblocklib.api.structure_requirements;
 
+import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.common.recipes.Structure;
 import com.qwq117458866249.multiblocklib.common.recipes.StructureRequirement;
 import net.minecraft.core.BlockPos;
@@ -22,5 +23,17 @@ public class DescStructureRequirement extends StructureRequirement {
     @Override
     public Component getDesc() {
         return desc;
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allStructureRequirements.put("desc_structure_requirement", obj -> new DescStructureRequirement(
+                switch (((JsonElement) obj[0]).getAsString()) {
+                    case "tran" -> Component.translatable(((JsonElement) obj[1]).getAsString());
+                    default -> Component.literal(((JsonElement) obj[1]).getAsString());
+                }
+        ));
     }
 }

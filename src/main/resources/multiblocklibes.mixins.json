@@ -1,0 +1,13 @@
+{
+    "required": true,
+    "package": "com.qwq117458866249.multiblocklib.mixin",
+    "mixins": [
+        "DisplayEntityAccessor"
+    ],
+    "client": [],
+    "server": [],
+    "compatibilityLevel": "JAVA_25",
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

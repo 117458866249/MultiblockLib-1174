@@ -20,6 +20,11 @@ public final class EmptyStructure extends Structure {
     }
 
     @Override
+    public String controllerId() {
+        return "";
+    }
+
+    @Override
     public ArrayList<StructureRequirement> requirements() {
         return new ArrayList<>();
     }

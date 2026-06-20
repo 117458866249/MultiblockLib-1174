@@ -3,6 +3,10 @@ package com.qwq117458866249.multiblocklib.util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.fml.loading.FMLPaths;
@@ -10,10 +14,7 @@ import net.neoforged.fml.loading.FMLPaths;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Util {
     public static BlockPos getAbsPos(BlockPos pos, int x, int y, int z) {
@@ -100,9 +101,7 @@ public class Util {
 
     public static ArrayList<String> getStringList(String... strs) {
         ArrayList<String> temp = new ArrayList<>();
-        for (String str : strs) {
-            temp.add(str);
-        }
+        Collections.addAll(temp, strs);
         return temp;
     }
 
@@ -130,5 +129,13 @@ public class Util {
             case EAST -> new BlockPos(1, 0, 0);
             case WEST -> new BlockPos(-1, 0, 0);
         };
+    }
+
+    public static ArrayList<ItemStack> expandWithCount(Ingredient ingredient, int count) {
+        ArrayList<ItemStack> temp = new ArrayList<>();
+        for (Holder<Item> i : ingredient.getValues()) {
+            temp.add(new ItemStack(i.value(), count));
+        }
+        return temp;
     }
 }

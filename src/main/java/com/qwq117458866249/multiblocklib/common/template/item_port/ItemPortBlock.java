@@ -22,15 +22,15 @@ import java.util.HashMap;
 
 public class ItemPortBlock extends BaseEntityBlock implements IAbleToForm {
     public static final ArrayList<Block> allThis = new ArrayList<>();
-    public static final HashMap<Block,Integer> allSize = new HashMap<>();
-    public static final HashMap<Block,IOMode> allIOMode = new HashMap<>();
+    public static final HashMap<Block, Integer> allSize = new HashMap<>();
+    public static final HashMap<Block, IOMode> allIOMode = new HashMap<>();
     public boolean noOnBreak = false;
 
     public ItemPortBlock(Properties properties, int slotAmount, IOMode ioMode) {
         super(properties);
-        allIOMode.put(this,ioMode);
+        allIOMode.put(this, ioMode);
         allThis.add(this);
-        allSize.put(this,slotAmount);
+        allSize.put(this, slotAmount);
     }
 
     private ItemPortBlock(Properties properties) {

@@ -18,7 +18,7 @@ public class TestControllerBlock extends ControllerBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
-        return createTickerHelper(type,Register.TEST_CONTROLLER_BE.get(), TestControllerBlockEntity::tick);
+        return createTickerHelper(type, Register.TEST_CONTROLLER_BE.get(), TestControllerBlockEntity::tick);
     }
 
     @Override
@@ -28,6 +28,6 @@ public class TestControllerBlock extends ControllerBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new TestControllerBlockEntity(blockPos,blockState);
+        return new TestControllerBlockEntity(blockPos, blockState);
     }
 }

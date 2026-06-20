@@ -1,12 +1,20 @@
 {
     "requirement.multiblocklib.min.f": "At least ",
-    "requirement.multiblocklib.min.b": " blocks in the structure",
+    "requirement.multiblocklib.min.b": " in the structure",
     "requirement.multiblocklib.max.f": "At most ",
-    "requirement.multiblocklib.max.b": " blocks in the structure",
+    "requirement.multiblocklib.max.b": " in the structure",
     "requirement.multiblocklib.right_count.f": "Just have ",
-    "requirement.multiblocklib.right_count.b": " blocks in the structure",
+    "requirement.multiblocklib.right_count.b": " in the structure",
 
     "tooltip.multiblocklib.input": "Input Only",
     "tooltip.multiblocklib.output": "Output Only",
-    "tooltip.multiblocklib.both": "Both Input And Output"
+    "tooltip.multiblocklib.both": "Both Input And Output",
+
+    "key.multiblocklib.formedas": "Formed As: ",
+    "key.multiblocklib.none": "None",
+    "key.multiblocklib.progress": "Processing Progress: ",
+    "key.multiblocklib.parsespeed": "Processing Speed: ",
+    "key.multiblocklib.parallels": "Maximum Concurrency: ",
+    "key.multiblock.structure": "Multiblock Structure",
+    "key.multiblockes.recipe": "Multiblock Recipe"
 }

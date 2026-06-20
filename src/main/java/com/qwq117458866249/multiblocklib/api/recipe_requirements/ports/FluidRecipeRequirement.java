@@ -1,5 +1,6 @@
 package com.qwq117458866249.multiblocklib.api.recipe_requirements.ports;
 
+import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
@@ -129,5 +130,25 @@ public class FluidRecipeRequirement extends RecipeRequirement {
     @Override
     public Component getDesc() {
         return Component.empty();
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allRecipeRequirements.put("fluid_recipe_requirement", obj -> {
+            if (obj.length == 4) {
+                return new FluidRecipeRequirement(
+                        IOMode.get(((JsonElement) obj[0]).getAsString()),
+                        ((JsonElement) obj[1]).getAsString(),
+                        ((JsonElement) obj[2]).getAsInt()
+                ).setPort(BuiltInRegistries.BLOCK.getValue(Identifier.parse(((JsonElement) obj[3]).getAsString())));
+            }
+            return new FluidRecipeRequirement(
+                    IOMode.get(((JsonElement) obj[0]).getAsString()),
+                    ((JsonElement) obj[1]).getAsString(),
+                    ((JsonElement) obj[2]).getAsInt()
+            );
+        });
     }
 }

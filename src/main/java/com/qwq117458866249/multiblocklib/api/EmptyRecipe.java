@@ -21,6 +21,11 @@ public final class EmptyRecipe extends Recipe {
         return "";
     }
 
+    @Override
+    public String structureId() {
+        return "";
+    }
+
     static {
         allRecipes.put(new EmptyRecipe().recipeId(), new EmptyRecipe());
     }

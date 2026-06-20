@@ -26,6 +26,18 @@ repositories {
     maven { url = "https://neoforged.forgecdn.net/releases" }
     maven { url = "https://neoforged.forgecdn.net/" }
     maven { url = "https://neoforged.forgecdn.net/mojang-meta" }
+    maven {
+        name = "Progwml6's maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 base {
@@ -76,6 +88,8 @@ configurations {
 }
 
 dependencies {
+    compileOnly("mezz.jei:jei-26.1.2-neoforge-api:29.6.2.31")
+    runtimeOnly("mezz.jei:jei-26.1.2-neoforge:29.6.2.31")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

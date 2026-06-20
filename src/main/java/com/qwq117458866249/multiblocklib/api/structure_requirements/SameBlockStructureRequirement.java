@@ -1,5 +1,6 @@
 package com.qwq117458866249.multiblocklib.api.structure_requirements;
 
+import com.google.gson.JsonArray;
 import com.qwq117458866249.multiblocklib.common.recipes.Structure;
 import com.qwq117458866249.multiblocklib.common.recipes.StructureRequirement;
 import com.qwq117458866249.multiblocklib.util.Util;
@@ -50,5 +51,28 @@ public class SameBlockStructureRequirement extends StructureRequirement {
     @Override
     public Component getDesc() {
         return Component.empty();
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allStructureRequirements.put("same_block_structure_requirement", obj -> {
+            ArrayList<BlockPos> temp = new ArrayList<>();
+
+            for (Object o : obj) {
+                if (o instanceof JsonArray array) {
+                    temp.add(
+                            new BlockPos(
+                                    array.asList().get(0).getAsInt(),
+                                    array.asList().get(1).getAsInt(),
+                                    array.asList().get(2).getAsInt()
+                            )
+                    );
+                }
+            }
+
+            return new SameBlockStructureRequirement(temp);
+        });
     }
 }

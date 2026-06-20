@@ -1,5 +1,7 @@
 package com.qwq117458866249.multiblocklib.api.recipe_requirements;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.api.structure_requirements.RightCountBlockStructureRequirement;
@@ -7,7 +9,9 @@ import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
 import com.qwq117458866249.multiblocklib.common.recipes.Structure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -24,7 +28,7 @@ public class RightCountBlocksRecipeRequirement extends RecipeRequirement {
 
     @Override
     public ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
-        if (new RightCountBlockStructureRequirement(blocks,value).cantForm(pos, level, face, structure)){
+        if (new RightCountBlockStructureRequirement(blocks, value).cantForm(pos, level, face, structure)) {
             return ParseResult.FAILED;
         } else {
             return ParseResult.SUCCESS;
@@ -43,6 +47,26 @@ public class RightCountBlocksRecipeRequirement extends RecipeRequirement {
 
     @Override
     public Component getDesc() {
-        return Component.literal(Component.translatable("requirement.multiblocklib.right_count.f").getString() + value + Component.translatable("requirement.multiblocklib.right_count.b").getString());
+        return Component.literal(Component.translatable("requirement.multiblocklib.right_count.f").getString() + value + " * " + Component.translatable(BuiltInRegistries.BLOCK.getValue(Identifier.parse(blocks.getFirst())).getDescriptionId()) + Component.translatable("requirement.multiblocklib.right_count.b").getString());
+    }
+
+    @Override
+    public boolean onlyDetectOnce() {
+        return true;
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allRecipeRequirements.put("right_count_blocks_recipe_requirement", obj -> {
+            ArrayList<String> temp = new ArrayList<>();
+            ((JsonArray) obj[2]).asList().forEach(each -> temp.add(each.getAsString()));
+            return new RightCountBlocksRecipeRequirement(
+                    IOMode.get(((JsonElement) obj[0]).getAsString()),
+                    ((JsonElement) obj[1]).getAsInt(),
+                    temp
+            );
+        });
     }
 }

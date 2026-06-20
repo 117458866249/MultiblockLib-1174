@@ -27,7 +27,8 @@ public class PortBlockItem extends BlockItem {
         if (hasToolTip()) {
             switch (io) {
                 case INPUT -> builder.accept(Component.translatable("tooltip.multiblocklib.input").withColor(0x645fdc));
-                case OUTPUT -> builder.accept(Component.translatable("tooltip.multiblocklib.output").withColor(0xeb913e));
+                case OUTPUT ->
+                        builder.accept(Component.translatable("tooltip.multiblocklib.output").withColor(0xeb913e));
                 case BOTH -> builder.accept(Component.translatable("tooltip.multiblocklib.both").withColor(0x00f1ff));
             }
         }

@@ -21,18 +21,29 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Info(m = "    allStructures.put(new ExampleStructure().structureId(),new ExampleStructure());")
 @Info(m = "}                                                                                  ")
 public abstract class Structure {
-    public static final HashBiMap<String, Structure> allStructures = HashBiMap.create();
+    public static HashBiMap<String, Structure> allStructures = HashBiMap.create();
 
     public abstract HashMap<BlockPos, ArrayList<String>> blocks();
 
     public abstract String structureId();
 
+    public abstract String controllerId();
+
     public abstract ArrayList<StructureRequirement> requirements();
 
-    public abstract ArrayList<Recipe> recipes();
+    public ArrayList<Recipe> recipes() {
+        ArrayList<Recipe> temp = new ArrayList<>();
+        Recipe.allRecipes.forEach((_, recipe) -> {
+            if (recipe.structureId().equals(structureId())) {
+                temp.add(recipe);
+            }
+        });
+        return temp;
+    }
 
     public String formedAs(BlockPos pos, Level level, Direction face) {
         AtomicBoolean ableToReturn = new AtomicBoolean(true);
+
         blocks().forEach((eachPos, availableBlocks) -> {
             if (ableToReturn.get()) {
                 ableToReturn.set(false);
@@ -69,14 +80,17 @@ public abstract class Structure {
                 });
             }
         });
+
         for (StructureRequirement p : requirements()) {
             if (ableToReturn.get() && p.cantForm(pos, level, face, this)) {
                 ableToReturn.set(false);
             }
         }
+
         if (ableToReturn.get()) {
             return structureId();
         }
+
         return "";
     }
 
@@ -96,9 +110,9 @@ public abstract class Structure {
         });
     }
 
-    public Recipe parseAbleRecipe(BlockPos pos, Level level, Direction face, Structure structure) {
+    public Recipe parseAbleRecipe(BlockPos pos, Level level, Direction face, Structure structure, boolean isParallels) {
         for (Recipe recipe : recipes()) {
-            if (recipe.canParseRecipe(pos, level, face, structure)) {
+            if (recipe.canParseRecipe(pos, level, face, structure, isParallels)) {
                 return recipe;
             }
         }

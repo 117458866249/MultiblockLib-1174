@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Info(m = "    allRecipes.put(new ExampleRecipe().recipeId(), new ExampleRecipe());")
 @Info(m = "}                                                                       ")
 public abstract class Recipe {
-    public static final HashBiMap<String, Recipe> allRecipes = HashBiMap.create();
+    public static HashBiMap<String, Recipe> allRecipes = HashBiMap.create();
 
     public abstract ArrayList<RecipeRequirement> recipeRequirements();
 
@@ -22,10 +22,12 @@ public abstract class Recipe {
 
     public abstract String recipeId();
 
-    public boolean canParseRecipe(BlockPos pos, Level level, Direction face, Structure structure) {
+    public abstract String structureId();
+
+    public boolean canParseRecipe(BlockPos pos, Level level, Direction face, Structure structure, boolean isParallels) {
         AtomicBoolean temp = new AtomicBoolean(true);
         recipeRequirements().forEach(p -> {
-            if (temp.get() && (!p.isOutput)) {
+            if (temp.get() && (!p.isOutput) && (!(p.onlyDetectOnce() && isParallels))) {
                 temp.set(false);
                 switch (p.canParseRequirement(pos, level, face, structure)) {
                     case SUCCESS -> temp.set(true);
@@ -37,17 +39,17 @@ public abstract class Recipe {
         return temp.get();
     }
 
-    public void inputRecipe(BlockPos pos, Level level, Direction face, Structure structure) {
+    public void inputRecipe(BlockPos pos, Level level, Direction face, Structure structure, boolean isFirst) {
         recipeRequirements().forEach(p -> {
-            if (!p.isOutput) {
+            if (!p.isOutput && ((!p.onlyDetectOnce()) || isFirst)) {
                 p.inputRequirement(pos, level, face, structure);
             }
         });
     }
 
-    public void outputRecipe(BlockPos pos, Level level, Direction face, Structure structure) {
+    public void outputRecipe(BlockPos pos, Level level, Direction face, Structure structure, boolean isFirst) {
         recipeRequirements().forEach(p -> {
-            if (p.isOutput) {
+            if (p.isOutput && ((!p.onlyDetectOnce()) || isFirst)) {
                 p.outputRequirement(pos, level, face, structure);
             }
         });

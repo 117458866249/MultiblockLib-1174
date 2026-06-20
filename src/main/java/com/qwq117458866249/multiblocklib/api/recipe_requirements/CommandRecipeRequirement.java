@@ -1,5 +1,6 @@
 package com.qwq117458866249.multiblocklib.api.recipe_requirements;
 
+import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
@@ -43,5 +44,20 @@ public class CommandRecipeRequirement extends RecipeRequirement {
     @Override
     public Component getDesc() {
         return Component.empty();
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allRecipeRequirements.put("command_recipe_requirement", obj -> new CommandRecipeRequirement(
+                IOMode.get(((JsonElement) obj[0]).getAsString()),
+                ((JsonElement) obj[1]).getAsString(),
+                new BlockPos(
+                        ((JsonElement) obj[2]).getAsInt(),
+                        ((JsonElement) obj[3]).getAsInt(),
+                        ((JsonElement) obj[4]).getAsInt()
+                )
+        ));
     }
 }

@@ -1,5 +1,6 @@
 package com.qwq117458866249.multiblocklib.api.recipe_requirements;
 
+import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.Level;
 
 public class DescRecipeRequirement extends RecipeRequirement {
     public final Component desc;
+
     public DescRecipeRequirement(IOMode io, Component desc) {
         super(io);
         this.desc = desc;
@@ -34,5 +36,23 @@ public class DescRecipeRequirement extends RecipeRequirement {
     @Override
     public Component getDesc() {
         return desc;
+    }
+
+    @Override
+    public boolean onlyDetectOnce() {
+        return true;
+    }
+
+    public static void register() {
+    }
+
+    static {
+        allRecipeRequirements.put("desc_recipe_requirement", obj -> new DescRecipeRequirement(
+                IOMode.get(((JsonElement) obj[0]).getAsString()),
+                switch (((JsonElement) obj[1]).getAsString()) {
+                    case "tran" -> Component.translatable(((JsonElement) obj[2]).getAsString());
+                    default -> Component.literal(((JsonElement) obj[2]).getAsString());
+                }
+        ));
     }
 }
