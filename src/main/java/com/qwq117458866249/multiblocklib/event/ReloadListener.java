@@ -29,8 +29,12 @@ public class ReloadListener {
         Structure.allStructures = HashBiMap.create();
         Recipe.allRecipes = HashBiMap.create();
 
+        JsonStructure.recipes = new ArrayList<>();
+        JsonRecipe.recipes = new ArrayList<>();
+
         manager.recipeMap().byType(Register.RECIPE_TYPE.get()).forEach(jsonRecipeRecipeHolder -> {
             JsonRecipe recipe = jsonRecipeRecipeHolder.value();
+            JsonRecipe.recipes.add(recipe);
             Recipe.allRecipes.put(recipe.recipeId, new Recipe() {
                 @Override
                 public ArrayList<RecipeRequirement> recipeRequirements() {
@@ -60,6 +64,7 @@ public class ReloadListener {
 
         manager.recipeMap().byType(Register.STRUCTURE_TYPE.get()).forEach(jsonStructureRecipeHolder -> {
             JsonStructure structure = jsonStructureRecipeHolder.value();
+            JsonStructure.recipes.add(structure);
             Structure.allStructures.put(structure.structureId, new Structure() {
                 @Override
                 public HashMap<BlockPos, ArrayList<String>> blocks() {

@@ -48,10 +48,10 @@ public class DescRecipeRequirement extends RecipeRequirement {
 
     static {
         allRecipeRequirements.put("desc_recipe_requirement", obj -> new DescRecipeRequirement(
-                IOMode.get(((JsonElement) obj[0]).getAsString()),
-                switch (((JsonElement) obj[1]).getAsString()) {
-                    case "tran" -> Component.translatable(((JsonElement) obj[2]).getAsString());
-                    default -> Component.literal(((JsonElement) obj[2]).getAsString());
+                IOMode.BOTH,
+                switch (((JsonElement) obj[0]).getAsString()) {
+                    case "tran" -> Component.translatable(((JsonElement) obj[1]).getAsString());
+                    default -> Component.literal(((JsonElement) obj[1]).getAsString());
                 }
         ));
     }

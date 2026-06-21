@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class JsonStructure implements Recipe<ModRecipeInput> {
+    public static ArrayList<JsonStructure> recipes = new ArrayList<>();
+
     public static final MapCodec<JsonStructure> CODEC =
             RecordCodecBuilder.mapCodec(instance ->
                     instance.group(
@@ -174,5 +176,10 @@ public class JsonStructure implements Recipe<ModRecipeInput> {
     @Override
     public RecipeBookCategory recipeBookCategory() {
         return RecipeBookCategories.CRAFTING_MISC;
+    }
+
+    @Override
+    public String toString() {
+        return structureId;
     }
 }

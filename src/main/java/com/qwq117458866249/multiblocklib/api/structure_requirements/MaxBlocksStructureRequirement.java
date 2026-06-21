@@ -67,7 +67,7 @@ public class MaxBlocksStructureRequirement extends StructureRequirement {
 
     @Override
     public Component getDesc() {
-        return Component.literal(Component.translatable("requirement.multiblocklib.max.f").getString() + value + " * " + Component.translatable(BuiltInRegistries.BLOCK.getValue(Identifier.parse(blocks.getFirst())).getDescriptionId()) + Component.translatable("requirement.multiblocklib.max.b").getString());
+        return Component.literal(Component.translatable("requirement.multiblocklib.max.f").getString() + value + " * " + Component.translatable(BuiltInRegistries.BLOCK.getValue(Identifier.parse(blocks.getFirst())).getDescriptionId()).getString() + Component.translatable("requirement.multiblocklib.max.b").getString());
     }
 
     public static void register() {

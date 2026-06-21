@@ -18,6 +18,8 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 
 public class JsonRecipe implements Recipe<ModRecipeInput> {
+    public static ArrayList<JsonRecipe> recipes = new ArrayList<>();
+
     public static final MapCodec<JsonRecipe> CODEC =
             RecordCodecBuilder.mapCodec(instance ->
                     instance.group(
@@ -132,5 +134,10 @@ public class JsonRecipe implements Recipe<ModRecipeInput> {
     @Override
     public RecipeBookCategory recipeBookCategory() {
         return RecipeBookCategories.CRAFTING_MISC;
+    }
+
+    @Override
+    public String toString() {
+        return recipeId;
     }
 }

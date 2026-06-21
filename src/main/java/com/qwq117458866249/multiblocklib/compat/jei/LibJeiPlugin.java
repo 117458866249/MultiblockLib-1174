@@ -1,15 +1,16 @@
 package com.qwq117458866249.multiblocklib.compat.jei;
 
 import com.qwq117458866249.multiblocklib.MultiblockLib;
-import com.qwq117458866249.multiblocklib.util.SomeProvider;
+import com.qwq117458866249.multiblocklib.common.recipes.json.JsonRecipe;
+import com.qwq117458866249.multiblocklib.common.recipes.json.JsonStructure;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.crafting.RecipeManager;
 
 @JeiPlugin
 public class LibJeiPlugin implements IModPlugin {
@@ -21,13 +22,14 @@ public class LibJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-
+        registration.addRecipeCategories(new RecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new StructureCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager recipeManager = new RecipeManager(new SomeProvider());
-
+        registration.addRecipes(IRecipeType.create(Identifier.parse("multiblocklibes:recipe"), JsonRecipe.class), JsonRecipe.recipes);
+        registration.addRecipes(IRecipeType.create(Identifier.parse("multiblocklibes:structure"), JsonStructure.class), JsonStructure.recipes);
     }
 
     @Override

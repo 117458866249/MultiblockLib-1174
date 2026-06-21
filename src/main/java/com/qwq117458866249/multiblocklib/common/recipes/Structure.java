@@ -118,4 +118,9 @@ public abstract class Structure {
         }
         return new EmptyRecipe();
     }
+
+    @Override
+    public String toString() {
+        return structureId();
+    }
 }

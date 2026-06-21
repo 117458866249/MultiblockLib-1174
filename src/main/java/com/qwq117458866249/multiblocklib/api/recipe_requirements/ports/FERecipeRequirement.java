@@ -92,7 +92,7 @@ public class FERecipeRequirement extends RecipeRequirement {
 
     @Override
     public Component getDesc() {
-        return Component.empty();
+        return Component.literal(count + " FE");
     }
 
     public static void register() {

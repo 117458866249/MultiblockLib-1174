@@ -47,8 +47,7 @@ public class MultiblockLibCommand {
     
     ],
     "requirements": []
-}
-""";
+}""";
                                                         BlockPos temp;
 
                                                         for (int i = Math.min(cornerI.getX(), cornerII.getX()); i <= Math.max(cornerI.getX(), cornerII.getX()); i++) {

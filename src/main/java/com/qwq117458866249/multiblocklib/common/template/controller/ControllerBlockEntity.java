@@ -73,7 +73,7 @@ public abstract class ControllerBlockEntity extends BlockEntity {
     }
 
     public Component display() {
-        return Component.translatable("key.multiblocklib.formedas").append(Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()).structureId().isEmpty() ? Component.translatable("key.multiblocklib.none") : Component.translatable("multiblock_structure" + Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()).structureId())).append("\n")
+        return Component.translatable("key.multiblocklib.formedas").append(Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()).structureId().isEmpty() ? Component.translatable("key.multiblocklib.none") : Component.translatable("multiblock_structure." + Structure.allStructures.getOrDefault(formedAs, new EmptyStructure()).structureId())).append("\n")
                 .append(Component.translatable("key.multiblocklib.progress")).append((Recipe.allRecipes.getOrDefault(parsingRecipe, new EmptyRecipe()).parsingTime() == 0 ? 0 : ((Number) (((Number) tick).floatValue() / ((Number) Recipe.allRecipes.getOrDefault(parsingRecipe, new EmptyRecipe()).parsingTime()).floatValue() * 100)).intValue()) + "%").append("\n")
                 .append(Component.translatable("key.multiblocklib.parsespeed")).append(getParseSpeed() + "x").append("\n")
                 .append(Component.translatable("key.multiblocklib.parallels")).append(getParallels() + "x");
