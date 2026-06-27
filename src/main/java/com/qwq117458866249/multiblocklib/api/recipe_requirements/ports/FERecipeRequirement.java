@@ -100,7 +100,7 @@ public class FERecipeRequirement extends RecipeRequirement {
 
     static {
         allRecipeRequirements.put("fe_recipe_requirement", obj -> {
-            if (obj.length == 3) {
+            if (obj.length >= 3) {
                 return new FERecipeRequirement(
                         IOMode.get(((JsonElement) obj[0]).getAsString()),
                         ((JsonElement) obj[1]).getAsInt()

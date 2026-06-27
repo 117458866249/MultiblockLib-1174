@@ -16,5 +16,6 @@
     "key.multiblocklib.parsespeed": "Processing Speed: ",
     "key.multiblocklib.parallels": "Maximum Concurrency: ",
     "key.multiblock.structure": "Multiblock Structure",
-    "key.multiblockes.recipe": "Multiblock Recipe"
+    "key.multiblockes.recipe": "Multiblock Recipe",
+    "key.multiblockes.pls_destory": "Please destroy the block located at the following position:"
 }

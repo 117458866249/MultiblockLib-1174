@@ -48,11 +48,6 @@ public class SameBlockStructureRequirement extends StructureRequirement {
         return cant.get();
     }
 
-    @Override
-    public Component getDesc() {
-        return Component.empty();
-    }
-
     public static void register() {
     }
 

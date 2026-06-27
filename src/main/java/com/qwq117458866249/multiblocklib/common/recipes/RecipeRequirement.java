@@ -34,7 +34,9 @@ public abstract class RecipeRequirement {
     @Info(m = "if (Math.random() >= chance) return;")
     public abstract void outputRequirement(BlockPos pos, Level level, Direction face, Structure structure);
 
-    public abstract Component getDesc();
+    public Component getDesc(){
+        return Component.empty();
+    }
 
     // Parallels
     public boolean detectOnce = false;

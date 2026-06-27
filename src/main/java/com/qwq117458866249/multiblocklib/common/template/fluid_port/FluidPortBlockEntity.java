@@ -1,6 +1,6 @@
 package com.qwq117458866249.multiblocklib.common.template.fluid_port;
 
-import com.qwq117458866249.multiblocklib.api.IAbleToForm;
+import com.qwq117458866249.multiblocklib.api.interfaces.IAbleToForm;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.common.register.Register;
 import com.qwq117458866249.multiblocklib.util.Util;

@@ -12,7 +12,9 @@ import java.util.HashMap;
 public abstract class StructureRequirement {
     public abstract boolean cantForm(BlockPos pos, Level level, Direction face, Structure structure);
 
-    public abstract Component getDesc();
+    public Component getDesc(){
+        return Component.empty();
+    }
 
     @Override
     public String toString() {

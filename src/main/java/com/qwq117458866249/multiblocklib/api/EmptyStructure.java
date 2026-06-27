@@ -21,7 +21,7 @@ public final class EmptyStructure extends Structure {
 
     @Override
     public String controllerId() {
-        return "";
+        return "minecraft:air";
     }
 
     @Override

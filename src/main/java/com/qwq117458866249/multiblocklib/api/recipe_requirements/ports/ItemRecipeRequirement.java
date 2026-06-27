@@ -126,17 +126,12 @@ public class ItemRecipeRequirement extends RecipeRequirement {
         }
     }
 
-    @Override
-    public Component getDesc() {
-        return Component.empty();
-    }
-
     public static void register() {
     }
 
     static {
         allRecipeRequirements.put("item_recipe_requirement", obj -> {
-            if (obj.length == 4) {
+            if (obj.length >= 4) {
                 return new ItemRecipeRequirement(
                         IOMode.get(((JsonElement) obj[0]).getAsString()),
                         ((JsonElement) obj[1]).getAsString(),

@@ -4,6 +4,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -137,5 +138,14 @@ public class Util {
             temp.add(new ItemStack(i.value(), count));
         }
         return temp;
+    }
+
+    public static void removeItem(Inventory inv, Item item) {
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            if (inv.getItem(i).getItem().equals(item)) {
+                inv.removeItem(i, 1);
+                break;
+            }
+        }
     }
 }

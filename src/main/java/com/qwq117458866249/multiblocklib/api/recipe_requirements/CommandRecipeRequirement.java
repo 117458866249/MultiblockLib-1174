@@ -41,11 +41,6 @@ public class CommandRecipeRequirement extends RecipeRequirement {
         Util.runCommand(command, level, Util.getAbsPos(pos, Util.getDirectionPos(absPos, face)));
     }
 
-    @Override
-    public Component getDesc() {
-        return Component.empty();
-    }
-
     public static void register() {
     }
 

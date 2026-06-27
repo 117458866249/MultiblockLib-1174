@@ -2,7 +2,7 @@ package com.qwq117458866249.multiblocklib.common.recipes;
 
 import com.google.common.collect.HashBiMap;
 import com.qwq117458866249.multiblocklib.api.EmptyRecipe;
-import com.qwq117458866249.multiblocklib.api.IAbleToForm;
+import com.qwq117458866249.multiblocklib.api.interfaces.IAbleToForm;
 import com.qwq117458866249.multiblocklib.util.Info;
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;

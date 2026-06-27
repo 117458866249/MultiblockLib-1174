@@ -127,17 +127,12 @@ public class FluidRecipeRequirement extends RecipeRequirement {
         }
     }
 
-    @Override
-    public Component getDesc() {
-        return Component.empty();
-    }
-
     public static void register() {
     }
 
     static {
         allRecipeRequirements.put("fluid_recipe_requirement", obj -> {
-            if (obj.length == 4) {
+            if (obj.length >= 4) {
                 return new FluidRecipeRequirement(
                         IOMode.get(((JsonElement) obj[0]).getAsString()),
                         ((JsonElement) obj[1]).getAsString(),

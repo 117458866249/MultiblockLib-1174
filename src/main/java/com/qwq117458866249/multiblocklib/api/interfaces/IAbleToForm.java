@@ -1,4 +1,4 @@
-package com.qwq117458866249.multiblocklib.api;
+package com.qwq117458866249.multiblocklib.api.interfaces;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

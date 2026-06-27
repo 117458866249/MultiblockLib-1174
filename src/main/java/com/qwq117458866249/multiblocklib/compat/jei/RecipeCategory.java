@@ -1,9 +1,11 @@
 package com.qwq117458866249.multiblocklib.compat.jei;
 
 import com.qwq117458866249.multiblocklib.MultiblockLib;
+import com.qwq117458866249.multiblocklib.api.EmptyStructure;
 import com.qwq117458866249.multiblocklib.api.recipe_requirements.ports.FluidRecipeRequirement;
 import com.qwq117458866249.multiblocklib.api.recipe_requirements.ports.ItemRecipeRequirement;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
+import com.qwq117458866249.multiblocklib.common.recipes.Structure;
 import com.qwq117458866249.multiblocklib.common.recipes.json.JsonRecipe;
 import com.qwq117458866249.multiblocklib.util.Info;
 import mezz.jei.api.constants.VanillaTypes;
@@ -65,6 +67,10 @@ public class RecipeCategory implements IRecipeCategory<JsonRecipe> {
     @Info(m = "Sorry , because of NoClassFoundError , your recipe requirement have to mixin this to display in JEI QwQ")
     public void setRecipe(IRecipeLayoutBuilder builder, JsonRecipe recipe, IFocusGroup focuses) {
         this.currentRecipe = recipe;
+
+        builder.addInputSlot(61, 27)
+                .add(new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(Structure.allStructures.getOrDefault(currentRecipe.structureId,new EmptyStructure()).controllerId())),1));
+
         ArrayList<RecipeRequirement> requirements = new ArrayList<>();
         currentRecipe.jsonObjects.forEach(jsonObject -> requirements.add(RecipeRequirement.fromJson(jsonObject)));
         AtomicInteger input = new AtomicInteger();
@@ -139,6 +145,25 @@ public class RecipeCategory implements IRecipeCategory<JsonRecipe> {
                         .build()
                         .draw(guiGraphics, 68 + i, y);
             }
+        }
+
+        // Frame
+        for (int x = 59; x <= 78; x++) {
+            helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
+                    .build()
+                    .draw(guiGraphics, x, 12);
+            helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
+                    .build()
+                    .draw(guiGraphics, x, 44);
+        }
+
+        for (int y = 13; y <= 43; y++) {
+            helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
+                    .build()
+                    .draw(guiGraphics, 59, y);
+            helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
+                    .build()
+                    .draw(guiGraphics, 78, y);
         }
 
         // Text

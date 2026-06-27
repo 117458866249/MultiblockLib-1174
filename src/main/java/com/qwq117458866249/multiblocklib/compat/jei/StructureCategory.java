@@ -61,7 +61,7 @@ public class StructureCategory implements IRecipeCategory<JsonStructure> {
     public void setRecipe(IRecipeLayoutBuilder builder, JsonStructure recipe, IFocusGroup focuses) {
         this.currentRecipe = recipe;
 
-        builder.addOutputSlot(0, 0)
+        builder.addInputSlot(0, 0)
                 .add(new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(currentRecipe.controllerId)), 1));
 
         HashMap<ArrayList<Item>, AtomicInteger> items = new HashMap<>();

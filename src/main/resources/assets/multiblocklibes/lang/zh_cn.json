@@ -16,5 +16,6 @@
     "key.multiblocklib.parsespeed": "处理速率：",
     "key.multiblocklib.parallels": "最大并行数：",
     "key.multiblock.structure": "多方块结构",
-    "key.multiblockes.recipe": "多方块配方"
+    "key.multiblockes.recipe": "多方块配方",
+    "key.multiblockes.pls_destory": "请挖掘掉位于以下坐标的方块："
 }

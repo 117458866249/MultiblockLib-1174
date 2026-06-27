@@ -3,13 +3,14 @@ package com.qwq117458866249.multiblocklib.common.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.qwq117458866249.multiblocklib.common.template.controller.ControllerBlock;
-import com.qwq117458866249.multiblocklib.common.template.controller.ControllerBlockEntity;
+import com.qwq117458866249.multiblocklib.api.interfaces.IControllerBlock;
+import com.qwq117458866249.multiblocklib.api.interfaces.IControllerBlockEntity;
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
@@ -31,7 +32,7 @@ public class MultiblockLibCommand {
                                 Commands.argument("cornerI", BlockPosArgument.blockPos()).then(
                                         Commands.argument("cornerII", BlockPosArgument.blockPos()).then(
                                                 Commands.argument("fileName", StringArgumentType.string()).executes(ctx -> {
-                                                    if (ctx.getSource().getLevel().getBlockEntity(BlockPosArgument.getBlockPos(ctx, "controllerPos")) instanceof ControllerBlockEntity) {
+                                                    if (ctx.getSource().getLevel().getBlockEntity(BlockPosArgument.getBlockPos(ctx, "controllerPos")) instanceof IControllerBlockEntity) {
 
                                                         BlockPos controller = BlockPosArgument.getBlockPos(ctx, "controllerPos");
                                                         BlockPos cornerI = BlockPosArgument.getBlockPos(ctx, "cornerI");
@@ -53,7 +54,7 @@ public class MultiblockLibCommand {
                                                         for (int i = Math.min(cornerI.getX(), cornerII.getX()); i <= Math.max(cornerI.getX(), cornerII.getX()); i++) {
                                                             for (int j = Math.min(cornerI.getY(), cornerII.getY()); j <= Math.max(cornerI.getY(), cornerII.getY()); j++) {
                                                                 for (int k = Math.min(cornerI.getZ(), cornerII.getZ()); k <= Math.max(cornerI.getZ(), cornerII.getZ()); k++) {
-                                                                    temp = Util.getDirectionPos(Util.getDifPos(new BlockPos(i, j, k), controller), ctx.getSource().getLevel().getBlockState(controller).getValue(ControllerBlock.FACING).getOpposite());
+                                                                    temp = Util.getDirectionPos(Util.getDifPos(new BlockPos(i, j, k), controller), weOppoDirection(ctx.getSource().getLevel().getBlockState(controller).getValue(IControllerBlock.FACING)));
                                                                     before = before + (!(temp.equals(new BlockPos(0, 0, 0)) || ctx.getSource().getLevel().getBlockState(new BlockPos(i, j, k)).getBlock().equals(Blocks.AIR) || ctx.getSource().getLevel().getBlockState(new BlockPos(i, j, k)).getBlock().equals(Blocks.CAVE_AIR) || ctx.getSource().getLevel().getBlockState(new BlockPos(i, j, k)).getBlock().equals(Blocks.VOID_AIR)) ?
                                                                             "\n            [" + temp.getX() + ", " + temp.getY() + ", " + temp.getZ() + ", [\"" + BuiltInRegistries.BLOCK.wrapAsHolder(ctx.getSource().getLevel().getBlockState(new BlockPos(i, j, k)).getBlock()).getRegisteredName() + "\"]]," : "");
                                                                 }
@@ -87,5 +88,12 @@ public class MultiblockLibCommand {
         );
 
         dispatcher.register(command);
+    }
+
+    public static Direction weOppoDirection(Direction direction) {
+        return switch (direction) {
+            case EAST, WEST -> direction.getOpposite();
+            default -> direction;
+        };
     }
 }

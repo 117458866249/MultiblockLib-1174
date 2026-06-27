@@ -90,11 +90,6 @@ public class BlockRecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public Component getDesc() {
-        return Component.empty();
-    }
-
-    @Override
     public boolean onlyDetectOnce() {
         return true;
     }
