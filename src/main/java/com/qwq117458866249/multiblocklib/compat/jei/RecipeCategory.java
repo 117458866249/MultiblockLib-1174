@@ -11,6 +11,8 @@ import com.qwq117458866249.multiblocklib.util.Info;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.drawable.IDrawableAnimated;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.neoforge.NeoForgeTypes;
@@ -68,8 +70,8 @@ public class RecipeCategory implements IRecipeCategory<JsonRecipe> {
     public void setRecipe(IRecipeLayoutBuilder builder, JsonRecipe recipe, IFocusGroup focuses) {
         this.currentRecipe = recipe;
 
-        builder.addInputSlot(61, 27)
-                .add(new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(Structure.allStructures.getOrDefault(currentRecipe.structureId,new EmptyStructure()).controllerId())),1));
+        builder.addInputSlot(61, 37)
+                .add(new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(Structure.allStructures.getOrDefault(currentRecipe.structureId, new EmptyStructure()).controllerId())), 1));
 
         ArrayList<RecipeRequirement> requirements = new ArrayList<>();
         currentRecipe.jsonObjects.forEach(jsonObject -> requirements.add(RecipeRequirement.fromJson(jsonObject)));
@@ -130,41 +132,8 @@ public class RecipeCategory implements IRecipeCategory<JsonRecipe> {
     @Override
     public void draw(JsonRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
 
-        // Arrow
-        for (int x = 61; x <= 68; x++) {
-            for (int y = 18; y <= 21; y++) {
-                helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
-                        .build()
-                        .draw(guiGraphics, x, y);
-            }
-        }
-
-        for (int i = 1; i <= 6; i++) {
-            for (int y = 13 + i; y <= 26 - i; y++) {
-                helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
-                        .build()
-                        .draw(guiGraphics, 68 + i, y);
-            }
-        }
-
-        // Frame
-        for (int x = 59; x <= 78; x++) {
-            helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
-                    .build()
-                    .draw(guiGraphics, x, 12);
-            helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
-                    .build()
-                    .draw(guiGraphics, x, 44);
-        }
-
-        for (int y = 13; y <= 43; y++) {
-            helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
-                    .build()
-                    .draw(guiGraphics, 59, y);
-            helper.drawableBuilder(Identifier.parse(MultiblockLib.MOD_ID + ":textures/gui/arrow.png"), 100, 100, 1, 1)
-                    .build()
-                    .draw(guiGraphics, 78, y);
-        }
+        // Background
+        helper.drawableBuilder(Identifier.parse("multiblocklibes:textures/gui/background.png"), 0, 0, 142, 110).setTextureSize(142, 110).build().draw(guiGraphics);
 
         // Text
         AtomicInteger line = new AtomicInteger();

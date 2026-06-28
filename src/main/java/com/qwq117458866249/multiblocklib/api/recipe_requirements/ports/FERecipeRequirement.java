@@ -12,17 +12,21 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class FERecipeRequirement extends RecipeRequirement {
     public final int count;
-    private Block port = null;
+    private List<JsonElement> port = null;
 
-    public FERecipeRequirement setPort(Block port) {
+    public FERecipeRequirement setPort(List<JsonElement> port) {
         this.port = port;
         return this;
     }
@@ -56,9 +60,24 @@ public class FERecipeRequirement extends RecipeRequirement {
         try (Transaction rtTransaction = Transaction.openRoot()) {
             AtomicInteger waitForProgress = new AtomicInteger(count);
             structure.blocks().forEach((eachPos, _) -> {
+                AtomicBoolean availablePort = new AtomicBoolean(false);
+                if (port != null) {
+                    port.forEach(jsonElement -> {
+                        if (jsonElement.getAsString().charAt(0) == '#') {
+                            if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(jsonElement.getAsString()))))) {
+                                availablePort.set(true);
+                            }
+                        } else {
+                            if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(BuiltInRegistries.BLOCK.getValue(Identifier.parse(jsonElement.getAsString())))) {
+                                availablePort.set(true);
+                            }
+                        }
+                    });
+                }
+
                 if (
                         level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof FEPortBlockEntity portEntity && (!portEntity.ioMode.equals(IOMode.OUTPUT)) &&
-                                (port == null || level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).getBlock().equals(port))
+                                (port == null || availablePort.get())
                 ) {
                     try (Transaction transaction = Transaction.open(rtTransaction)) {
                         waitForProgress.addAndGet(-portEntity.handler.extract(waitForProgress.get(), transaction));
@@ -76,9 +95,24 @@ public class FERecipeRequirement extends RecipeRequirement {
         try (Transaction rtTransaction = Transaction.openRoot()) {
             AtomicInteger waitForProgress = new AtomicInteger(count);
             structure.blocks().forEach((eachPos, _) -> {
+                AtomicBoolean availablePort = new AtomicBoolean(false);
+                if (port != null) {
+                    port.forEach(jsonElement -> {
+                        if (jsonElement.getAsString().charAt(0) == '#') {
+                            if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(jsonElement.getAsString()))))) {
+                                availablePort.set(true);
+                            }
+                        } else {
+                            if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(BuiltInRegistries.BLOCK.getValue(Identifier.parse(jsonElement.getAsString())))) {
+                                availablePort.set(true);
+                            }
+                        }
+                    });
+                }
+
                 if (
-                        level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof FEPortBlockEntity portEntity && (!portEntity.ioMode.equals(IOMode.OUTPUT)) &&
-                                (port == null || level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).getBlock().equals(port))
+                        level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof FEPortBlockEntity portEntity && portEntity.ioMode.equals(IOMode.OUTPUT) &&
+                                (port == null || availablePort.get())
                 ) {
                     try (Transaction transaction = Transaction.open(rtTransaction)) {
                         waitForProgress.addAndGet(-portEntity.handler.insert(waitForProgress.get(), transaction));
@@ -104,7 +138,7 @@ public class FERecipeRequirement extends RecipeRequirement {
                 return new FERecipeRequirement(
                         IOMode.get(((JsonElement) obj[0]).getAsString()),
                         ((JsonElement) obj[1]).getAsInt()
-                ).setPort(BuiltInRegistries.BLOCK.getValue(Identifier.parse(((JsonElement) obj[2]).getAsString())));
+                ).setPort(((JsonElement) obj[2]).getAsJsonArray().asList());
             }
             return new FERecipeRequirement(
                     IOMode.get(((JsonElement) obj[0]).getAsString()),

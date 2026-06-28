@@ -10,15 +10,15 @@ import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ItemRecipeRequirement extends RecipeRequirement {
@@ -26,9 +26,9 @@ public class ItemRecipeRequirement extends RecipeRequirement {
     public TagKey<Item> itemTagKey = null;
     public boolean isTag = false;
     public final int count;
-    private Block port = null;
+    private List<JsonElement> port = null;
 
-    public ItemRecipeRequirement setPort(Block port) {
+    public ItemRecipeRequirement setPort(List<JsonElement> port) {
         this.port = port;
         return this;
     }
@@ -49,9 +49,24 @@ public class ItemRecipeRequirement extends RecipeRequirement {
         AtomicInteger waitForProgress = new AtomicInteger(count);
 
         structure.blocks().forEach((eachPos, _) -> {
+            AtomicBoolean availablePort = new AtomicBoolean(false);
+            if (port != null) {
+                port.forEach(jsonElement -> {
+                    if (jsonElement.getAsString().charAt(0) == '#') {
+                        if (level.getBlockState(eachPos).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(jsonElement.getAsString()))))) {
+                            availablePort.set(true);
+                        }
+                    } else {
+                        if (level.getBlockState(eachPos).is(BuiltInRegistries.BLOCK.getValue(Identifier.parse(jsonElement.getAsString())))) {
+                            availablePort.set(true);
+                        }
+                    }
+                });
+            }
+
             if (
                     level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof ItemPortBlockEntity portEntity && (!portEntity.ioMode.equals(IOMode.OUTPUT)) &&
-                            (port == null || level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).getBlock().equals(port))
+                            (port == null || availablePort.get())
             ) {
                 portEntity.handler.copyToList().forEach(eachStack -> {
                     if (
@@ -79,9 +94,24 @@ public class ItemRecipeRequirement extends RecipeRequirement {
         try (Transaction rtTransaction = Transaction.openRoot()) {
             AtomicInteger waitForProgress = new AtomicInteger(count);
             structure.blocks().forEach((eachPos, _) -> {
+                AtomicBoolean availablePort = new AtomicBoolean(false);
+                if (port != null) {
+                    port.forEach(jsonElement -> {
+                        if (jsonElement.getAsString().charAt(0) == '#') {
+                            if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(jsonElement.getAsString()))))) {
+                                availablePort.set(true);
+                            }
+                        } else {
+                            if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(BuiltInRegistries.BLOCK.getValue(Identifier.parse(jsonElement.getAsString())))) {
+                                availablePort.set(true);
+                            }
+                        }
+                    });
+                }
+
                 if (
                         level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof ItemPortBlockEntity portEntity && (!portEntity.ioMode.equals(IOMode.OUTPUT)) &&
-                                (port == null || level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).getBlock().equals(port))
+                                (port == null || availablePort.get())
                 ) {
                     for (int i = 0; i < portEntity.slotAmount; i++) {
                         if (isTag) {
@@ -112,9 +142,24 @@ public class ItemRecipeRequirement extends RecipeRequirement {
         try (Transaction rtTransaction = Transaction.openRoot()) {
             AtomicInteger waitForProgress = new AtomicInteger(count);
             structure.blocks().forEach((eachPos, _) -> {
+                AtomicBoolean availablePort = new AtomicBoolean(false);
+                if (port != null) {
+                    port.forEach(jsonElement -> {
+                        if (jsonElement.getAsString().charAt(0) == '#') {
+                            if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(jsonElement.getAsString()))))) {
+                                availablePort.set(true);
+                            }
+                        } else {
+                            if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(BuiltInRegistries.BLOCK.getValue(Identifier.parse(jsonElement.getAsString())))) {
+                                availablePort.set(true);
+                            }
+                        }
+                    });
+                }
+
                 if (
-                        level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof ItemPortBlockEntity portEntity && (!portEntity.ioMode.equals(IOMode.INPUT)) &&
-                                (port == null || level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).getBlock().equals(port))
+                        level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof ItemPortBlockEntity portEntity && portEntity.ioMode.equals(IOMode.OUTPUT) &&
+                                (port == null || availablePort.get())
                 ) {
                     try (Transaction transaction = Transaction.open(rtTransaction)) {
                         waitForProgress.addAndGet(-portEntity.handler.insert(ItemResource.of(item), waitForProgress.get(), transaction));
@@ -136,7 +181,7 @@ public class ItemRecipeRequirement extends RecipeRequirement {
                         IOMode.get(((JsonElement) obj[0]).getAsString()),
                         ((JsonElement) obj[1]).getAsString(),
                         ((JsonElement) obj[2]).getAsInt()
-                ).setPort(BuiltInRegistries.BLOCK.getValue(Identifier.parse(((JsonElement) obj[3]).getAsString())));
+                ).setPort(((JsonElement) obj[3]).getAsJsonArray().asList());
             }
             return new ItemRecipeRequirement(
                     IOMode.get(((JsonElement) obj[0]).getAsString()),
