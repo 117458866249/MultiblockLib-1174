@@ -1,6 +1,8 @@
 # 1174's MultiblockLib 
 This is a mod which custom multiblock structure  
 How 2 use?
+## 00 Config project
+Add this mod's cursemaven to your build.gradle
 ## 01 Register Controller And Port
 
 ```java
