@@ -2,9 +2,9 @@ package com.qwq117458866249.multiblocklib.api.interfaces;
 
 import com.qwq117458866249.multiblocklib.api.EmptyRecipe;
 import com.qwq117458866249.multiblocklib.api.EmptyStructure;
-import com.qwq117458866249.multiblocklib.common.recipes.Recipe;
-import com.qwq117458866249.multiblocklib.common.recipes.Structure;
-import com.qwq117458866249.multiblocklib.mixin.DisplayEntityAccessor;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockRecipe;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockStructure;
+import com.qwq117458866249.multiblocklib.mixin.TextDisplayEntityAccessor;
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -50,9 +50,9 @@ public interface IControllerBlockEntity {
 
     Level iGetLevel();
 
-    default ArrayList<Structure> allStructures() {
-        ArrayList<Structure> temp = new ArrayList<>();
-        Structure.allStructures.forEach((_, structure) -> {
+    default ArrayList<MultiblockStructure> allStructures() {
+        ArrayList<MultiblockStructure> temp = new ArrayList<>();
+        MultiblockStructure.allStructures.forEach((_, structure) -> {
             if (structure.controllerId().equals(BuiltInRegistries.BLOCK.wrapAsHolder(iGetBlockState().getBlock()).getRegisteredName())) {
                 temp.add(structure);
             }
@@ -85,8 +85,8 @@ public interface IControllerBlockEntity {
     }
 
     default Component display() {
-        return Component.translatable("key.multiblocklib.formedas").append(Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).structureId().isEmpty() ? Component.translatable("key.multiblocklib.none") : Component.translatable("multiblock_structure." + Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).structureId())).append("\n")
-                .append(Component.translatable("key.multiblocklib.progress")).append((Recipe.allRecipes.getOrDefault(getParsingRecipe(), new EmptyRecipe()).parsingTime() == 0 ? 0 : ((Number) (((Number) getTick()).floatValue() / ((Number) Recipe.allRecipes.getOrDefault(getParsingRecipe(), new EmptyRecipe()).parsingTime()).floatValue() * 100)).intValue()) + "%").append("\n")
+        return Component.translatable("key.multiblocklib.formedas").append(MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).structureId().isEmpty() ? Component.translatable("key.multiblocklib.none") : Component.translatable("multiblock_structure." + MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).structureId())).append("\n")
+                .append(Component.translatable("key.multiblocklib.progress")).append((MultiblockRecipe.allRecipes.getOrDefault(getParsingRecipe(), new EmptyRecipe()).parsingTime() == 0 ? 0 : ((Number) (((Number) getTick()).floatValue() / ((Number) MultiblockRecipe.allRecipes.getOrDefault(getParsingRecipe(), new EmptyRecipe()).parsingTime()).floatValue() * 100)).intValue()) + "%").append("\n")
                 .append(Component.translatable("key.multiblocklib.parsespeed")).append(getParseSpeed() + "x").append("\n")
                 .append(Component.translatable("key.multiblocklib.parallels")).append(getParallels() + "x");
     }
@@ -110,12 +110,12 @@ public interface IControllerBlockEntity {
             });
         } else {
             if (
-                    Structure.allStructures
+                    MultiblockStructure.allStructures
                             .getOrDefault(getFormedAs(), new EmptyStructure())
                             .formedAs(pos, level, state.getValue(IControllerBlock.FACING))
                             .isEmpty()
             ) {
-                Structure.allStructures
+                MultiblockStructure.allStructures
                         .getOrDefault(getFormedAs(), new EmptyStructure())
                         .unForm(pos, level, state.getValue(IControllerBlock.FACING));
                 unForm(level, pos);
@@ -128,27 +128,27 @@ public interface IControllerBlockEntity {
             if (
                     getParsingRecipe().isEmpty() &&
                             (
-                                    !Structure.allStructures
+                                    !MultiblockStructure.allStructures
                                             .getOrDefault(getFormedAs(), new EmptyStructure())
-                                            .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), false)
+                                            .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), false)
                                             .recipeId().isEmpty()
                             )
             ) {
                 setParsingRecipe(
-                        Structure.allStructures
+                        MultiblockStructure.allStructures
                                 .getOrDefault(getFormedAs(), new EmptyStructure())
-                                .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), false)
+                                .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), false)
                                 .recipeId()
                 );
                 for (int i = 0; i < getParallels(); i++) {
-                    if (!Structure.allStructures
+                    if (!MultiblockStructure.allStructures
                             .getOrDefault(getFormedAs(), new EmptyStructure())
-                            .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), true)
+                            .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), true)
                             .recipeId()
                             .isEmpty()) {
-                        Structure.allStructures
-                                .getOrDefault(getFormedAs(), new EmptyStructure()).parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), true)
-                                .inputRecipe(pos, level, state.getValue(IControllerBlock.FACING), Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), i == 0);
+                        MultiblockStructure.allStructures
+                                .getOrDefault(getFormedAs(), new EmptyStructure()).parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), true)
+                                .inputRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), i == 0);
                         setRecipeParallels(getRecipeParallels() + 1);
                     } else break;
                 }
@@ -162,15 +162,15 @@ public interface IControllerBlockEntity {
                 setTick(0);
             }
 
-            if (getTick() >= Recipe.allRecipes
+            if (getTick() >= MultiblockRecipe.allRecipes
                     .getOrDefault(getParsingRecipe(), new EmptyRecipe())
                     .parsingTime() &&
                     !getParsingRecipe()
                             .isEmpty()) {
                 for (int i = 0; i < getRecipeParallels(); i++) {
-                    Recipe.allRecipes
+                    MultiblockRecipe.allRecipes
                             .getOrDefault(getParsingRecipe(), new EmptyRecipe())
-                            .outputRecipe(pos, level, state.getValue(IControllerBlock.FACING), Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), i == 0);
+                            .outputRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), i == 0);
                 }
                 setParsingRecipe("");
                 setTick(0);
@@ -208,7 +208,7 @@ public interface IControllerBlockEntity {
 
         if (getAllDisplays().isEmpty()) {
             Display.TextDisplay textDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
-            DisplayEntityAccessor accessor = (DisplayEntityAccessor) textDisplay;
+            TextDisplayEntityAccessor accessor = (TextDisplayEntityAccessor) textDisplay;
             textDisplay.setPos(
                     new Vec3(
                             pos.getX() + 0.5 + Util.getDirectionalPos(state.getValue(IControllerBlock.FACING)).getX(),
@@ -224,7 +224,7 @@ public interface IControllerBlockEntity {
             }
             level.addFreshEntity(textDisplay);
         } else {
-            DisplayEntityAccessor accessor = (DisplayEntityAccessor) getAllDisplays().getFirst();
+            TextDisplayEntityAccessor accessor = (TextDisplayEntityAccessor) getAllDisplays().getFirst();
             accessor.invokerSetText(display());
         }
     }
@@ -244,7 +244,7 @@ public interface IControllerBlockEntity {
     }
 
     default void iPreRemoveSideEffects(BlockPos pos, BlockState state) {
-        Structure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).unForm(pos, iGetLevel(), state.getValue(IControllerBlock.FACING));
+        MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).unForm(pos, iGetLevel(), state.getValue(IControllerBlock.FACING));
         getAllDisplays().forEach((display) -> display.remove(Entity.RemovalReason.KILLED));
     }
 }

@@ -9,12 +9,8 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Info(m = "We should add these code to your structure code")
-@Info(m = "static {                                                                ")
-@Info(m = "    allRecipes.put(new ExampleRecipe().recipeId(), new ExampleRecipe());")
-@Info(m = "}                                                                       ")
-public abstract class Recipe {
-    public static HashBiMap<String, Recipe> allRecipes = HashBiMap.create();
+public abstract class MultiblockRecipe {
+    public static HashBiMap<String, MultiblockRecipe> allRecipes = HashBiMap.create();
 
     public abstract ArrayList<RecipeRequirement> recipeRequirements();
 
@@ -24,7 +20,7 @@ public abstract class Recipe {
 
     public abstract String structureId();
 
-    public boolean canParseRecipe(BlockPos pos, Level level, Direction face, Structure structure, boolean isParallels) {
+    public boolean canParseRecipe(BlockPos pos, Level level, Direction face, MultiblockStructure structure, boolean isParallels) {
         AtomicBoolean temp = new AtomicBoolean(true);
         recipeRequirements().forEach(p -> {
             if (temp.get() && (!p.isOutput) && (!(p.onlyDetectOnce() && isParallels))) {
@@ -39,7 +35,7 @@ public abstract class Recipe {
         return temp.get();
     }
 
-    public void inputRecipe(BlockPos pos, Level level, Direction face, Structure structure, boolean isFirst) {
+    public void inputRecipe(BlockPos pos, Level level, Direction face, MultiblockStructure structure, boolean isFirst) {
         recipeRequirements().forEach(p -> {
             if (!p.isOutput && ((!p.onlyDetectOnce()) || isFirst)) {
                 p.inputRequirement(pos, level, face, structure);
@@ -47,7 +43,7 @@ public abstract class Recipe {
         });
     }
 
-    public void outputRecipe(BlockPos pos, Level level, Direction face, Structure structure, boolean isFirst) {
+    public void outputRecipe(BlockPos pos, Level level, Direction face, MultiblockStructure structure, boolean isFirst) {
         recipeRequirements().forEach(p -> {
             if (p.isOutput && ((!p.onlyDetectOnce()) || isFirst)) {
                 p.outputRequirement(pos, level, face, structure);

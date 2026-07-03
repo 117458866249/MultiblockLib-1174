@@ -17,10 +17,10 @@ import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 
-public class JsonRecipe implements Recipe<ModRecipeInput> {
-    public static ArrayList<JsonRecipe> recipes = new ArrayList<>();
+public class MultiblockJsonRecipe implements Recipe<ModRecipeInput> {
+    public static ArrayList<MultiblockJsonRecipe> recipes = new ArrayList<>();
 
-    public static final MapCodec<JsonRecipe> CODEC =
+    public static final MapCodec<MultiblockJsonRecipe> CODEC =
             RecordCodecBuilder.mapCodec(instance ->
                     instance.group(
                             Codec.list(Codec.PASSTHROUGH)
@@ -49,11 +49,11 @@ public class JsonRecipe implements Recipe<ModRecipeInput> {
                             jsonObjects.add(elem.getAsJsonObject());
                         }
 
-                        return new JsonRecipe(jsonObjects, time, recipeId, structureId);
+                        return new MultiblockJsonRecipe(jsonObjects, time, recipeId, structureId);
                     })
             );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, JsonRecipe> STREAM_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, MultiblockJsonRecipe> STREAM_CODEC =
             StreamCodec.of(
                     (buf, recipe) -> {
                         buf.writeInt(recipe.time);
@@ -75,11 +75,11 @@ public class JsonRecipe implements Recipe<ModRecipeInput> {
                             return JsonParser.parseString(json).getAsJsonObject();
                         }).forEach(list::add);
 
-                        return new JsonRecipe(list, time, recipeId, structureId);
+                        return new MultiblockJsonRecipe(list, time, recipeId, structureId);
                     }
             );
 
-    public static final RecipeSerializer<JsonRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
+    public static final RecipeSerializer<MultiblockJsonRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
     public ArrayList<JsonObject> jsonObjects;
 
@@ -89,7 +89,7 @@ public class JsonRecipe implements Recipe<ModRecipeInput> {
 
     public String structureId;
 
-    public JsonRecipe(ArrayList<JsonObject> jsonObjects, int time, String recipeId, String structureId) {
+    public MultiblockJsonRecipe(ArrayList<JsonObject> jsonObjects, int time, String recipeId, String structureId) {
         this.jsonObjects = jsonObjects;
         this.time = time;
         this.recipeId = recipeId;

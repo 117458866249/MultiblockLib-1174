@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(Display.TextDisplay.class)
-public interface DisplayEntityAccessor {
+public interface TextDisplayEntityAccessor {
 
     @Invoker("setText")
     void invokerSetText(Component text);

@@ -1,7 +1,7 @@
 package com.qwq117458866249.multiblocklib.compat.jei;
 
 import com.qwq117458866249.multiblocklib.common.recipes.StructureRequirement;
-import com.qwq117458866249.multiblocklib.common.recipes.json.JsonStructure;
+import com.qwq117458866249.multiblocklib.common.recipes.json.MultiblockJsonStructure;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -24,17 +24,17 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class StructureCategory implements IRecipeCategory<JsonStructure> {
+public class StructureCategory implements IRecipeCategory<MultiblockJsonStructure> {
     public IGuiHelper helper;
-    public JsonStructure currentRecipe;
+    public MultiblockJsonStructure currentRecipe;
 
     public StructureCategory(IGuiHelper helper) {
         this.helper = helper;
     }
 
     @Override
-    public IRecipeType<JsonStructure> getRecipeType() {
-        return IRecipeType.create(Identifier.parse("multiblocklibes:structure"), JsonStructure.class);
+    public IRecipeType<MultiblockJsonStructure> getRecipeType() {
+        return IRecipeType.create(Identifier.parse("multiblocklibes:structure"), MultiblockJsonStructure.class);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class StructureCategory implements IRecipeCategory<JsonStructure> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, JsonStructure recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, MultiblockJsonStructure recipe, IFocusGroup focuses) {
         this.currentRecipe = recipe;
 
         builder.addInputSlot(0, 0)
@@ -100,7 +100,7 @@ public class StructureCategory implements IRecipeCategory<JsonStructure> {
     }
 
     @Override
-    public void draw(JsonStructure recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(MultiblockJsonStructure recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         AtomicInteger line = new AtomicInteger();
 
         ArrayList<StructureRequirement> requirements = new ArrayList<>();

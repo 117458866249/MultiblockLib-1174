@@ -5,12 +5,11 @@ import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
-import com.qwq117458866249.multiblocklib.common.recipes.Structure;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockStructure;
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
@@ -30,7 +29,7 @@ public class BlockRecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         AtomicBoolean ableToReturn = new AtomicBoolean(false);
         block.forEach(availableBlock -> {
             if (availableBlock.charAt(0) == '#') {
@@ -71,12 +70,12 @@ public class BlockRecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public void inputRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public void inputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         // Attack the D point!
     }
 
     @Override
-    public void outputRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public void outputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         if (Math.random() >= chance) return;
         block.forEach(availableBlock -> {
             level.setBlock(

@@ -2,12 +2,9 @@ package com.qwq117458866249.multiblocklib.event;
 
 import com.google.common.collect.HashBiMap;
 import com.qwq117458866249.multiblocklib.MultiblockLib;
-import com.qwq117458866249.multiblocklib.common.recipes.Recipe;
-import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
-import com.qwq117458866249.multiblocklib.common.recipes.Structure;
-import com.qwq117458866249.multiblocklib.common.recipes.StructureRequirement;
-import com.qwq117458866249.multiblocklib.common.recipes.json.JsonRecipe;
-import com.qwq117458866249.multiblocklib.common.recipes.json.JsonStructure;
+import com.qwq117458866249.multiblocklib.common.recipes.*;
+import com.qwq117458866249.multiblocklib.common.recipes.json.MultiblockJsonRecipe;
+import com.qwq117458866249.multiblocklib.common.recipes.json.MultiblockJsonStructure;
 import com.qwq117458866249.multiblocklib.common.register.Register;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -26,16 +23,16 @@ import java.util.HashMap;
 @EventBusSubscriber(modid = MultiblockLib.MOD_ID)
 public class ReloadListener {
     public static void load(RecipeManager manager) {
-        Structure.allStructures = HashBiMap.create();
-        Recipe.allRecipes = HashBiMap.create();
+        MultiblockStructure.allStructures = HashBiMap.create();
+        MultiblockRecipe.allRecipes = HashBiMap.create();
 
-        JsonStructure.recipes = new ArrayList<>();
-        JsonRecipe.recipes = new ArrayList<>();
+        MultiblockJsonStructure.recipes = new ArrayList<>();
+        MultiblockJsonRecipe.recipes = new ArrayList<>();
 
         manager.recipeMap().byType(Register.RECIPE_TYPE.get()).forEach(jsonRecipeRecipeHolder -> {
-            JsonRecipe recipe = jsonRecipeRecipeHolder.value();
-            JsonRecipe.recipes.add(recipe);
-            Recipe.allRecipes.put(recipe.recipeId, new Recipe() {
+            MultiblockJsonRecipe recipe = jsonRecipeRecipeHolder.value();
+            MultiblockJsonRecipe.recipes.add(recipe);
+            MultiblockRecipe.allRecipes.put(recipe.recipeId, new MultiblockRecipe() {
                 @Override
                 public ArrayList<RecipeRequirement> recipeRequirements() {
                     ArrayList<RecipeRequirement> t = new ArrayList<>();
@@ -63,9 +60,9 @@ public class ReloadListener {
         });
 
         manager.recipeMap().byType(Register.STRUCTURE_TYPE.get()).forEach(jsonStructureRecipeHolder -> {
-            JsonStructure structure = jsonStructureRecipeHolder.value();
-            JsonStructure.recipes.add(structure);
-            Structure.allStructures.put(structure.structureId, new Structure() {
+            MultiblockJsonStructure structure = jsonStructureRecipeHolder.value();
+            MultiblockJsonStructure.recipes.add(structure);
+            MultiblockStructure.allStructures.put(structure.structureId, new MultiblockStructure() {
                 @Override
                 public HashMap<BlockPos, ArrayList<String>> blocks() {
                     return structure.blocks;

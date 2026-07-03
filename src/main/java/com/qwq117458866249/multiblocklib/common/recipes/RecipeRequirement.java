@@ -26,13 +26,13 @@ public abstract class RecipeRequirement {
         this.isOutput = io.equals(IOMode.OUTPUT);
     }
 
-    public abstract ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, Structure structure);
+    public abstract ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure);
 
-    public abstract void inputRequirement(BlockPos pos, Level level, Direction face, Structure structure);
+    public abstract void inputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure);
 
     @Info(m = "Add this code to your Requirement")
     @Info(m = "if (Math.random() >= chance) return;")
-    public abstract void outputRequirement(BlockPos pos, Level level, Direction face, Structure structure);
+    public abstract void outputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure);
 
     public Component getDesc(){
         return Component.empty();

@@ -1,18 +1,15 @@
 package com.qwq117458866249.multiblocklib.compat.jei;
 
-import com.qwq117458866249.multiblocklib.MultiblockLib;
 import com.qwq117458866249.multiblocklib.api.EmptyStructure;
 import com.qwq117458866249.multiblocklib.api.recipe_requirements.ports.FluidRecipeRequirement;
 import com.qwq117458866249.multiblocklib.api.recipe_requirements.ports.ItemRecipeRequirement;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
-import com.qwq117458866249.multiblocklib.common.recipes.Structure;
-import com.qwq117458866249.multiblocklib.common.recipes.json.JsonRecipe;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockStructure;
+import com.qwq117458866249.multiblocklib.common.recipes.json.MultiblockJsonRecipe;
 import com.qwq117458866249.multiblocklib.util.Info;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
-import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.neoforge.NeoForgeTypes;
@@ -32,17 +29,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RecipeCategory implements IRecipeCategory<JsonRecipe> {
+public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
     public IGuiHelper helper;
-    public JsonRecipe currentRecipe;
+    public MultiblockJsonRecipe currentRecipe;
 
     public RecipeCategory(IGuiHelper helper) {
         this.helper = helper;
     }
 
     @Override
-    public IRecipeType<JsonRecipe> getRecipeType() {
-        return IRecipeType.create(Identifier.parse("multiblocklibes:recipe"), JsonRecipe.class);
+    public IRecipeType<MultiblockJsonRecipe> getRecipeType() {
+        return IRecipeType.create(Identifier.parse("multiblocklibes:recipe"), MultiblockJsonRecipe.class);
     }
 
     @Override
@@ -67,11 +64,11 @@ public class RecipeCategory implements IRecipeCategory<JsonRecipe> {
 
     @Override
     @Info(m = "Sorry , because of NoClassFoundError , your recipe requirement have to mixin this to display in JEI QwQ")
-    public void setRecipe(IRecipeLayoutBuilder builder, JsonRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, MultiblockJsonRecipe recipe, IFocusGroup focuses) {
         this.currentRecipe = recipe;
 
         builder.addInputSlot(61, 37)
-                .add(new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(Structure.allStructures.getOrDefault(currentRecipe.structureId, new EmptyStructure()).controllerId())), 1));
+                .add(new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(MultiblockStructure.allStructures.getOrDefault(currentRecipe.structureId, new EmptyStructure()).controllerId())), 1));
 
         ArrayList<RecipeRequirement> requirements = new ArrayList<>();
         currentRecipe.jsonObjects.forEach(jsonObject -> requirements.add(RecipeRequirement.fromJson(jsonObject)));
@@ -130,7 +127,7 @@ public class RecipeCategory implements IRecipeCategory<JsonRecipe> {
     }
 
     @Override
-    public void draw(JsonRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(MultiblockJsonRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
 
         // Background
         helper.drawableBuilder(Identifier.parse("multiblocklibes:textures/gui/background.png"), 0, 0, 142, 110).setTextureSize(142, 110).build().draw(guiGraphics);

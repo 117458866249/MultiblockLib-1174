@@ -15,7 +15,9 @@
     "key.multiblocklib.progress": "处理进度：",
     "key.multiblocklib.parsespeed": "处理速率：",
     "key.multiblocklib.parallels": "最大并行数：",
-    "key.multiblock.structure": "多方块结构",
+    "key.multiblock.structure": "多方块结构表单",
+    "key.multiblock.structure_view": "多方块结构预览",
     "key.multiblockes.recipe": "多方块配方",
-    "key.multiblockes.pls_destory": "请挖掘掉位于以下坐标的方块："
+    "key.multiblockes.pls_destory": "请挖掘掉位于以下坐标的方块：",
+    "key.multiblockes.layer": "层数："
 }

@@ -9,6 +9,7 @@ import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.qwq117458866249.multiblocklib.api.ModRecipeInput;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockStructureSimpleViewer;
 import com.qwq117458866249.multiblocklib.common.register.Register;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -20,10 +21,10 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class JsonStructure implements Recipe<ModRecipeInput> {
-    public static ArrayList<JsonStructure> recipes = new ArrayList<>();
+public class MultiblockJsonStructure implements Recipe<ModRecipeInput> {
+    public static ArrayList<MultiblockJsonStructure> recipes = new ArrayList<>();
 
-    public static final MapCodec<JsonStructure> CODEC =
+    public static final MapCodec<MultiblockJsonStructure> CODEC =
             RecordCodecBuilder.mapCodec(instance ->
                     instance.group(
                             Codec.list(Codec.PASSTHROUGH)
@@ -75,11 +76,11 @@ public class JsonStructure implements Recipe<ModRecipeInput> {
                             blocks.put(new BlockPos(x, y, z), blockList);
                         }
 
-                        return new JsonStructure(jsonObjects, blocks, structureId, controllerId);
+                        return new MultiblockJsonStructure(jsonObjects, blocks, structureId, controllerId);
                     })
             );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, JsonStructure> STREAM_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, MultiblockJsonStructure> STREAM_CODEC =
             StreamCodec.of(
                     (buf, recipe) -> {
                         buf.writeUtf(recipe.structureId);
@@ -117,7 +118,7 @@ public class JsonStructure implements Recipe<ModRecipeInput> {
                             return new java.util.AbstractMap.SimpleEntry<>(new BlockPos(x, y, z), blockList);
                         }).forEach(entry -> blocks.put(entry.getKey(), entry.getValue()));
 
-                        return new JsonStructure(list, blocks, structureId, controllerId);
+                        return new MultiblockJsonStructure(list, blocks, structureId, controllerId);
                     }
             );
 
@@ -129,14 +130,17 @@ public class JsonStructure implements Recipe<ModRecipeInput> {
 
     public String controllerId;
 
-    public JsonStructure(ArrayList<JsonObject> jsonObjects, HashMap<BlockPos, ArrayList<String>> blocks, String structureId, String controllerId) {
+    public MultiblockStructureSimpleViewer view;
+
+    public MultiblockJsonStructure(ArrayList<JsonObject> jsonObjects, HashMap<BlockPos, ArrayList<String>> blocks, String structureId, String controllerId) {
         this.jsonObjects = jsonObjects;
         this.blocks = blocks;
         this.structureId = structureId;
         this.controllerId = controllerId;
+        this.view = new MultiblockStructureSimpleViewer(blocks, controllerId);
     }
 
-    public static final RecipeSerializer<JsonStructure> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
+    public static final RecipeSerializer<MultiblockJsonStructure> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
     @Override
     public boolean matches(ModRecipeInput modRecipeInput, Level level) {

@@ -1,8 +1,8 @@
 package com.qwq117458866249.multiblocklib.common.register;
 
 import com.qwq117458866249.multiblocklib.MultiblockLib;
-import com.qwq117458866249.multiblocklib.common.recipes.json.JsonRecipe;
-import com.qwq117458866249.multiblocklib.common.recipes.json.JsonStructure;
+import com.qwq117458866249.multiblocklib.common.recipes.json.MultiblockJsonRecipe;
+import com.qwq117458866249.multiblocklib.common.recipes.json.MultiblockJsonStructure;
 import com.qwq117458866249.multiblocklib.common.template.fe_port.FEPortBlock;
 import com.qwq117458866249.multiblocklib.common.template.fe_port.FEPortBlockEntity;
 import com.qwq117458866249.multiblocklib.common.template.fluid_port.FluidPortBlock;
@@ -42,24 +42,24 @@ public class Register {
     );
 
     // Recipe
-    public static final Supplier<RecipeType<JsonRecipe>> RECIPE_TYPE = RECIPE_TYPES.register(
+    public static final Supplier<RecipeType<MultiblockJsonRecipe>> RECIPE_TYPE = RECIPE_TYPES.register(
             "recipe",
             () -> RecipeType.simple(Identifier.parse("multiblocklibes:recipe"))
     );
 
-    public static final Supplier<RecipeType<JsonStructure>> STRUCTURE_TYPE = RECIPE_TYPES.register(
+    public static final Supplier<RecipeType<MultiblockJsonStructure>> STRUCTURE_TYPE = RECIPE_TYPES.register(
             "structure",
             () -> RecipeType.simple(Identifier.parse("multiblocklibes:structure"))
     );
 
-    public static final Supplier<RecipeSerializer<JsonRecipe>> RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(
+    public static final Supplier<RecipeSerializer<MultiblockJsonRecipe>> RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(
             "recipe",
-            () -> JsonRecipe.SERIALIZER
+            () -> MultiblockJsonRecipe.SERIALIZER
     );
 
-    public static final Supplier<RecipeSerializer<JsonStructure>> STRUCTURE_SERIALIZER = RECIPE_SERIALIZERS.register(
+    public static final Supplier<RecipeSerializer<MultiblockJsonStructure>> STRUCTURE_SERIALIZER = RECIPE_SERIALIZERS.register(
             "structure",
-            () -> JsonStructure.SERIALIZER
+            () -> MultiblockJsonStructure.SERIALIZER
     );
 
     public static void register(IEventBus eventBus) {

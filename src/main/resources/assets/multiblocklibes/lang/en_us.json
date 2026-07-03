@@ -15,7 +15,9 @@
     "key.multiblocklib.progress": "Processing Progress: ",
     "key.multiblocklib.parsespeed": "Processing Speed: ",
     "key.multiblocklib.parallels": "Maximum Concurrency: ",
-    "key.multiblock.structure": "Multiblock Structure",
+    "key.multiblock.structure": "Multiblock Structure - List of Materials",
+    "key.multiblock.structure_view": "Multiblock Structure - View",
     "key.multiblockes.recipe": "Multiblock Recipe",
-    "key.multiblockes.pls_destory": "Please destroy the block located at the following position:"
+    "key.multiblockes.pls_destory": "Please destroy the block located at the following position:",
+    "key.multiblockes.layer": "Layer:"
 }

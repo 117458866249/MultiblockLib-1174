@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
-import com.qwq117458866249.multiblocklib.common.recipes.Structure;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockStructure;
 import com.qwq117458866249.multiblocklib.common.template.fluid_port.FluidPortBlockEntity;
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;
@@ -45,7 +45,7 @@ public class FluidRecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         AtomicInteger waitForProgress = new AtomicInteger(count);
 
         structure.blocks().forEach((eachPos, _) -> {
@@ -76,7 +76,7 @@ public class FluidRecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public void inputRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public void inputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         try (Transaction rtTransaction = Transaction.openRoot()) {
             AtomicInteger waitForProgress = new AtomicInteger(count);
             structure.blocks().forEach((eachPos, _) -> {
@@ -123,7 +123,7 @@ public class FluidRecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public void outputRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public void outputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         if (Math.random() >= chance) return;
         try (Transaction rtTransaction = Transaction.openRoot()) {
             AtomicInteger waitForProgress = new AtomicInteger(count);

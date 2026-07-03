@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import java.util.HashMap;
 
 public abstract class StructureRequirement {
-    public abstract boolean cantForm(BlockPos pos, Level level, Direction face, Structure structure);
+    public abstract boolean cantForm(BlockPos pos, Level level, Direction face, MultiblockStructure structure);
 
     public Component getDesc(){
         return Component.empty();

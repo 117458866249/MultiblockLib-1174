@@ -3,7 +3,6 @@ package com.qwq117458866249.multiblocklib.common.recipes;
 import com.google.common.collect.HashBiMap;
 import com.qwq117458866249.multiblocklib.api.EmptyRecipe;
 import com.qwq117458866249.multiblocklib.api.interfaces.IAbleToForm;
-import com.qwq117458866249.multiblocklib.util.Info;
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,12 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Info(m = "We should add these code to your structure code")
-@Info(m = "static {                                                                           ")
-@Info(m = "    allStructures.put(new ExampleStructure().structureId(),new ExampleStructure());")
-@Info(m = "}                                                                                  ")
-public abstract class Structure {
-    public static HashBiMap<String, Structure> allStructures = HashBiMap.create();
+public abstract class MultiblockStructure {
+    public static HashBiMap<String, MultiblockStructure> allStructures = HashBiMap.create();
 
     public abstract HashMap<BlockPos, ArrayList<String>> blocks();
 
@@ -31,9 +26,9 @@ public abstract class Structure {
 
     public abstract ArrayList<StructureRequirement> requirements();
 
-    public ArrayList<Recipe> recipes() {
-        ArrayList<Recipe> temp = new ArrayList<>();
-        Recipe.allRecipes.forEach((_, recipe) -> {
+    public ArrayList<MultiblockRecipe> recipes() {
+        ArrayList<MultiblockRecipe> temp = new ArrayList<>();
+        MultiblockRecipe.allRecipes.forEach((_, recipe) -> {
             if (recipe.structureId().equals(structureId())) {
                 temp.add(recipe);
             }
@@ -110,8 +105,8 @@ public abstract class Structure {
         });
     }
 
-    public Recipe parseAbleRecipe(BlockPos pos, Level level, Direction face, Structure structure, boolean isParallels) {
-        for (Recipe recipe : recipes()) {
+    public MultiblockRecipe parseAbleRecipe(BlockPos pos, Level level, Direction face, MultiblockStructure structure, boolean isParallels) {
+        for (MultiblockRecipe recipe : recipes()) {
             if (recipe.canParseRecipe(pos, level, face, structure, isParallels)) {
                 return recipe;
             }

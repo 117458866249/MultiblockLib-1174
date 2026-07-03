@@ -1,14 +1,14 @@
 package com.qwq117458866249.multiblocklib.api;
 
-import com.qwq117458866249.multiblocklib.common.recipes.Recipe;
-import com.qwq117458866249.multiblocklib.common.recipes.Structure;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockRecipe;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockStructure;
 import com.qwq117458866249.multiblocklib.common.recipes.StructureRequirement;
 import net.minecraft.core.BlockPos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public final class EmptyStructure extends Structure {
+public final class EmptyStructure extends MultiblockStructure {
     @Override
     public HashMap<BlockPos, ArrayList<String>> blocks() {
         return new HashMap<>();
@@ -30,7 +30,7 @@ public final class EmptyStructure extends Structure {
     }
 
     @Override
-    public ArrayList<Recipe> recipes() {
+    public ArrayList<MultiblockRecipe> recipes() {
         return new ArrayList<>();
     }
 

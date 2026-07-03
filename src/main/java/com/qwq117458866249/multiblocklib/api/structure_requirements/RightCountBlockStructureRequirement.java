@@ -2,7 +2,7 @@ package com.qwq117458866249.multiblocklib.api.structure_requirements;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.qwq117458866249.multiblocklib.common.recipes.Structure;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockStructure;
 import com.qwq117458866249.multiblocklib.common.recipes.StructureRequirement;
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;
@@ -27,7 +27,7 @@ public class RightCountBlockStructureRequirement extends StructureRequirement {
     }
 
     @Override
-    public boolean cantForm(BlockPos pos, Level level, Direction face, Structure structure) {
+    public boolean cantForm(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         AtomicInteger availableBlocks = new AtomicInteger();
         structure.blocks().forEach((eachPos, z) -> {
             blocks.forEach(block -> {

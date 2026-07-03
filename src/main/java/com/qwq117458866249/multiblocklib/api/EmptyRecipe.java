@@ -1,11 +1,11 @@
 package com.qwq117458866249.multiblocklib.api;
 
-import com.qwq117458866249.multiblocklib.common.recipes.Recipe;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockRecipe;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
 
 import java.util.ArrayList;
 
-public final class EmptyRecipe extends Recipe {
+public final class EmptyRecipe extends MultiblockRecipe {
     @Override
     public ArrayList<RecipeRequirement> recipeRequirements() {
         return new ArrayList<>();

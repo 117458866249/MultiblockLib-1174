@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.qwq117458866249.multiblocklib.api.IOMode;
 import com.qwq117458866249.multiblocklib.api.ParseResult;
 import com.qwq117458866249.multiblocklib.common.recipes.RecipeRequirement;
-import com.qwq117458866249.multiblocklib.common.recipes.Structure;
+import com.qwq117458866249.multiblocklib.common.recipes.MultiblockStructure;
 import com.qwq117458866249.multiblocklib.common.template.fe_port.FEPortBlockEntity;
 import com.qwq117458866249.multiblocklib.util.Util;
 import net.minecraft.core.BlockPos;
@@ -14,10 +14,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,7 +35,7 @@ public class FERecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public ParseResult canParseRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         AtomicInteger waitForProgress = new AtomicInteger(count);
 
         structure.blocks().forEach((eachPos, _) -> {
@@ -56,7 +54,7 @@ public class FERecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public void inputRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public void inputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         try (Transaction rtTransaction = Transaction.openRoot()) {
             AtomicInteger waitForProgress = new AtomicInteger(count);
             structure.blocks().forEach((eachPos, _) -> {
@@ -90,7 +88,7 @@ public class FERecipeRequirement extends RecipeRequirement {
     }
 
     @Override
-    public void outputRequirement(BlockPos pos, Level level, Direction face, Structure structure) {
+    public void outputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure) {
         if (Math.random() >= chance) return;
         try (Transaction rtTransaction = Transaction.openRoot()) {
             AtomicInteger waitForProgress = new AtomicInteger(count);
