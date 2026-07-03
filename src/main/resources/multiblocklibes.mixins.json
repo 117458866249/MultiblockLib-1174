@@ -2,8 +2,7 @@
     "required": true,
     "package": "com.qwq117458866249.multiblocklib.mixin",
     "mixins": [
-        "TextDisplayEntityAccessor",
-        "BlockDisplayEntityAccessor"
+        "TextDisplayEntityAccessor"
     ],
     "client": [],
     "server": [],
