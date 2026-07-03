@@ -17,6 +17,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class StructureViewCategory implements IRecipeCategory<MultiblockJsonStru
     public IGuiHelper helper;
     public MultiblockJsonStructure currentRecipe;
     public int yLayer = 1;
+    public int ticker = 0;
 
     public StructureViewCategory(IGuiHelper helper) {
         this.helper = helper;
@@ -47,7 +49,7 @@ public class StructureViewCategory implements IRecipeCategory<MultiblockJsonStru
 
     @Override
     public int getHeight() {
-        return 130;
+        return 330;
     }
 
     @Override
@@ -59,34 +61,17 @@ public class StructureViewCategory implements IRecipeCategory<MultiblockJsonStru
     public void setRecipe(IRecipeLayoutBuilder builder, MultiblockJsonStructure recipe, IFocusGroup focuses) {
         this.currentRecipe = recipe;
 
-        int xStart = 181 - 10 * recipe.view.getX();
-        int zStart = 75 + 10 * recipe.view.getZ();
-
-        ArrayList<ItemStack> stacks = new ArrayList<>();
-
-        recipe.view.getBlocks().forEach((pos, blocks) -> {
-            if (pos.getY() + 1 == yLayer) {
-                blocks.forEach(block -> {
-                    if (block.charAt(0) == '#') {
-                        BuiltInRegistries.BLOCK
-                                .stream()
-                                .filter(filter -> filter.defaultBlockState().is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(block)))))
-                                .toList()
-                                .forEach(item -> stacks.add(new ItemStack(item.asItem(), 1)));
-                    } else {
-                        stacks.add(new ItemStack(BuiltInRegistries.BLOCK.getValue(Identifier.parse(block)).asItem(), 1));
-                    }
-                });
-
-                builder.addInputSlot(xStart + pos.getX() * 20, zStart - pos.getZ() * 20)
-                        .addItemStacks((ArrayList<ItemStack>) stacks.clone());
-                stacks.clear();
-            }
-        });
+        builder.addInputSlot(1145, 1145)
+                .add(BuiltInRegistries.ITEM.getValue(Identifier.parse(currentRecipe.controllerId)));
     }
 
     @Override
     public void draw(MultiblockJsonStructure recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+
+        // Layer
+        if (yLayer - 1 > recipe.view.getY()) {
+            yLayer = 1;
+        }
 
         // Background
         helper.drawableBuilder(Identifier.parse("multiblocklibes:textures/gui/background2.png"), 0, 0, 362, 130).setTextureSize(362, 130).build().draw(guiGraphics);
@@ -117,5 +102,34 @@ public class StructureViewCategory implements IRecipeCategory<MultiblockJsonStru
                 }
             }
         }
+
+        // View
+        int xStart = 181 - 10 * recipe.view.getX();
+        int zStart = 15 + 20 * recipe.view.getZ();
+
+        ArrayList<Block> stacks = new ArrayList<>();
+
+        recipe.view.getBlocks().forEach((pos, blocks) -> {
+            if (pos.getY() + 1 == yLayer) {
+                blocks.forEach(block -> {
+                    if (block.charAt(0) == '#') {
+                        BuiltInRegistries.BLOCK
+                                .stream()
+                                .filter(filter -> filter.defaultBlockState().is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(block)))))
+                                .toList()
+                                .forEach(stacks::add);
+                    } else {
+                        stacks.add(BuiltInRegistries.BLOCK.getValue(Identifier.parse(block)));
+                    }
+                });
+
+                helper.createDrawableItemLike(stacks.get(ticker / 50 % stacks.size())).draw(guiGraphics, xStart + (recipe.view.getX() - pos.getX()) * 20, zStart - pos.getZ() * 20);
+
+                stacks.clear();
+            }
+        });
+
+        // Ticker
+        ticker++;
     }
 }

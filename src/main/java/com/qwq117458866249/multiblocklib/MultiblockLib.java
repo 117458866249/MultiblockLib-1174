@@ -25,7 +25,7 @@ public class MultiblockLib {
     public MultiblockLib(IEventBus modEventBus, ModContainer modContainer) {
         NeoForge.EVENT_BUS.register(this);
         Register.register(modEventBus);
-        com.qwq117458866249.multiblocklib.test.Register.register(modEventBus);
+        //com.qwq117458866249.multiblocklib.test.Register.register(modEventBus);
     }
 
     @SubscribeEvent
