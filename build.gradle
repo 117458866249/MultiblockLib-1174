@@ -88,8 +88,8 @@ configurations {
 }
 
 dependencies {
-    compileOnly("mezz.jei:jei-26.1.2-neoforge-api:29.6.2.31")
-    runtimeOnly("mezz.jei:jei-26.1.2-neoforge:29.6.2.31")
+    compileOnly("mezz.jei:jei-26.2-neoforge-api:30.4.0.25")
+    runtimeOnly("mezz.jei:jei-26.2-neoforge:30.4.0.25")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

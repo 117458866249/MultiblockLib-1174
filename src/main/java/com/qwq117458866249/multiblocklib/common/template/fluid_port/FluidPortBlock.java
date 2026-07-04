@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -87,7 +88,10 @@ public class FluidPortBlock extends BaseEntityBlock implements IAbleToForm {
     @Override
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if ((!isDirectional()) || hitResult.getDirection().equals(state.getValue(FACING))) {
-            FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.getDirection());
+            try (Transaction transaction = Transaction.openRoot()) {
+                FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.getDirection(), transaction);
+                transaction.commit();
+            }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.TRY_WITH_EMPTY_HAND;

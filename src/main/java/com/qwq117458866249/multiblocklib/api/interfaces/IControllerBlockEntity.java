@@ -14,7 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -207,7 +207,7 @@ public interface IControllerBlockEntity {
         )));
 
         if (getAllDisplays().isEmpty()) {
-            Display.TextDisplay textDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
+            Display.TextDisplay textDisplay = new Display.TextDisplay(EntityTypes.TEXT_DISPLAY, level);
             TextDisplayEntityAccessor accessor = (TextDisplayEntityAccessor) textDisplay;
             textDisplay.setPos(
                     new Vec3(
