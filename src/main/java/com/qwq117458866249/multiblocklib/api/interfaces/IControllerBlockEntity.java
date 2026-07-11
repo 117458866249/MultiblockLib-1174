@@ -23,6 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface IControllerBlockEntity {
@@ -60,11 +61,11 @@ public interface IControllerBlockEntity {
         return temp;
     }
 
-    default void form(Level level, BlockPos pos) {
+    default void form(Level level, BlockPos pos, HashMap<BlockPos, ArrayList<String>> bps) {
         level.setBlock(pos, level.getBlockState(pos).setValue(IControllerBlock.FORMED, true), 3);
     }
 
-    default void unForm(Level level, BlockPos pos) {
+    default void unForm(Level level, BlockPos pos, HashMap<BlockPos, ArrayList<String>> bps) {
         level.setBlock(pos, level.getBlockState(pos).setValue(IControllerBlock.FORMED, false), 3);
     }
 
@@ -104,7 +105,7 @@ public interface IControllerBlockEntity {
                     setFormedAs(temp);
                     if (!getFormedAs().isEmpty()) {
                         p.form(pos, level, state.getValue(IControllerBlock.FACING));
-                        form(level, pos);
+                        form(level, pos, MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).blocks());
                     }
                 }
             });
@@ -118,7 +119,7 @@ public interface IControllerBlockEntity {
                 MultiblockStructure.allStructures
                         .getOrDefault(getFormedAs(), new EmptyStructure())
                         .unForm(pos, level, state.getValue(IControllerBlock.FACING));
-                unForm(level, pos);
+                unForm(level, pos, MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).blocks());
                 setFormedAs("");
             }
         }
