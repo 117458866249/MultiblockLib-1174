@@ -2,6 +2,7 @@ package com.qwq117458866249.multiblocklib.compat.jei;
 
 import com.qwq117458866249.multiblocklib.common.recipes.StructureRequirement;
 import com.qwq117458866249.multiblocklib.common.recipes.json.MultiblockJsonStructure;
+import com.qwq117458866249.multiblocklib.util.Util;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -14,6 +15,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -72,7 +74,16 @@ public class StructureCategory implements IRecipeCategory<MultiblockJsonStructur
 
         recipe.blocks.forEach((_, block) -> {
             block.forEach(b -> {
-                tempBlock.set(BuiltInRegistries.BLOCK.getValue(Identifier.parse(b)).asItem());
+                if (b.charAt(0) == '#') {
+                    BuiltInRegistries.BLOCK
+                            .stream()
+                            .filter(filter -> filter.defaultBlockState().is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(b)))))
+                            .toList()
+                            .forEach(p -> temp.add(p.asItem()));
+                } else {
+                    tempBlock.set(BuiltInRegistries.BLOCK.getValue(Identifier.parse(b)).asItem());
+                }
+
                 if (!tempBlock.get().equals(Items.AIR)) {
                     temp.add(tempBlock.get());
                 }

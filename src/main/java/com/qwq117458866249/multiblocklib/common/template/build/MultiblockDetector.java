@@ -29,7 +29,7 @@ public class MultiblockDetector extends Item {
             structure.blocks().forEach((eachPos, blocks) -> {
                 for (String block : blocks) {
                     if (block.charAt(0) == '#') {
-                        if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, level.getBlockState(pos).getValue(IControllerBlock.FACING)))).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(block)))) {
+                        if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, level.getBlockState(pos).getValue(IControllerBlock.FACING)))).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(block))))) {
                             return;
                         }
                     } else {
