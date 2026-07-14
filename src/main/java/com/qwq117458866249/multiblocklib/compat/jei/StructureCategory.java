@@ -89,7 +89,9 @@ public class StructureCategory implements IRecipeCategory<MultiblockJsonStructur
         });
 
         items.forEach((stack, count) -> {
-            stack.forEach(item -> stacks.add(new ItemStack(item, count.get())));
+            stack.forEach(item -> {
+                if (!item.equals(Items.AIR)) stacks.add(new ItemStack(item, count.get()));
+            });
 
             builder.addInputSlot(i.get() % 6 * 20, 20 + i.get() / 6 * 20)
                     .addItemStacks(stacks);

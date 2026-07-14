@@ -82,11 +82,14 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
                     BuiltInRegistries.ITEM.stream()
                             .filter(item -> new ItemStack(item).is(requirement.itemTagKey))
                             .toList()
-                            .forEach(item -> stacks.add(new ItemStack(item, requirement.count)));
+                            .forEach(item -> {
+                                if (!item.equals(Items.AIR)) stacks.add(new ItemStack(item, requirement.count));
+                            });
                     builder.addInputSlot(0 + input.get() % 3 * 20, 12 + input.get() / 3 * 20)
                             .addItemStacks(stacks);
                     input.getAndIncrement();
                 } else {
+                    if (requirement.item.equals(Items.AIR)) return;
                     if (!requirement.isOutput) {
                         builder.addInputSlot(0 + input.get() % 3 * 20, 12 + input.get() / 3 * 20)
                                 .add(new ItemStack(requirement.item, requirement.count));

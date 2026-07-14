@@ -123,7 +123,9 @@ public class StructureViewCategory implements IRecipeCategory<MultiblockJsonStru
                     }
                 });
 
-                helper.createDrawableItemLike(stacks.get(ticker / 50 % stacks.size())).draw(guiGraphics, xStart + (recipe.view.getX() - pos.getX()) * 20, zStart - pos.getZ() * 20);
+                if (!stacks.get(ticker / 50 % stacks.size()).asItem().equals(Items.AIR)) {
+                    helper.createDrawableItemLike(stacks.get(ticker / 50 % stacks.size())).draw(guiGraphics, xStart + (recipe.view.getX() - pos.getX()) * 20, zStart - pos.getZ() * 20);
+                }
 
                 stacks.clear();
             }
