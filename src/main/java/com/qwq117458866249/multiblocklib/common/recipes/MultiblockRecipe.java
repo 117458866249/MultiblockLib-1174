@@ -1,7 +1,6 @@
 package com.qwq117458866249.multiblocklib.common.recipes;
 
 import com.google.common.collect.HashBiMap;
-import com.qwq117458866249.multiblocklib.util.Info;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -20,10 +19,10 @@ public abstract class MultiblockRecipe {
 
     public abstract String structureId();
 
-    public boolean canParseRecipe(BlockPos pos, Level level, Direction face, MultiblockStructure structure, boolean isParallels) {
+    public boolean canParseRecipe(BlockPos pos, Level level, Direction face, MultiblockStructure structure, boolean isFirst) {
         AtomicBoolean temp = new AtomicBoolean(true);
         recipeRequirements().forEach(p -> {
-            if (temp.get() && (!p.isOutput) && (!(p.onlyDetectOnce() && isParallels))) {
+            if (temp.get() && (!p.isOutput) && ((!p.onlyDetectOnce()) || isFirst)) {
                 temp.set(false);
                 switch (p.canParseRequirement(pos, level, face, structure)) {
                     case SUCCESS -> temp.set(true);
@@ -37,7 +36,7 @@ public abstract class MultiblockRecipe {
 
     public void inputRecipe(BlockPos pos, Level level, Direction face, MultiblockStructure structure, boolean isFirst) {
         recipeRequirements().forEach(p -> {
-            if (!p.isOutput && ((!p.onlyDetectOnce()) || isFirst)) {
+            if ((!p.isOutput) && ((!p.onlyDetectOnce()) || isFirst)) {
                 p.inputRequirement(pos, level, face, structure);
             }
         });

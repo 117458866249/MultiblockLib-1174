@@ -34,7 +34,7 @@ public abstract class RecipeRequirement {
     @Info(m = "if (Math.random() >= chance) return;")
     public abstract void outputRequirement(BlockPos pos, Level level, Direction face, MultiblockStructure structure);
 
-    public Component getDesc(){
+    public Component getDesc() {
         return Component.empty();
     }
 
@@ -56,7 +56,7 @@ public abstract class RecipeRequirement {
     public static RecipeRequirement fromJson(JsonObject json) {
         try {
             try {
-                if (json.get("once").isJsonObject() && json.get("once").getAsBoolean()) {
+                if (json.get("once").getAsBoolean()) {
                     return allRecipeRequirements.get(json.get("id").getAsString()).get(json.get("property").getAsJsonArray().asList().toArray()).setDetectOnce();
                 }
             } catch (Exception _) {

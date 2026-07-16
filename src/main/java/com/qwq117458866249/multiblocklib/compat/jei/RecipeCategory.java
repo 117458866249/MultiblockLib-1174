@@ -141,7 +141,11 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
 
         recipe.jsonObjects.forEach(jsonObject -> requirements.add(RecipeRequirement.fromJson(jsonObject)));
 
-        guiGraphics.textRenderer().accept(0, 0, Component.translatable("multiblock_structure." + recipe.structureId));
+        guiGraphics.textRenderer().accept(0, 0,
+                Component.translatable("multiblock_structure." + recipe.structureId)
+                        .append(" ")
+                        .append(recipe.time / 20f + "s")
+        );
 
         requirements.forEach(requirement -> {
             if (!requirement.getDesc().equals(Component.empty())) {

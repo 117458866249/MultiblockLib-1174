@@ -105,9 +105,9 @@ public abstract class MultiblockStructure {
         });
     }
 
-    public MultiblockRecipe parseAbleRecipe(BlockPos pos, Level level, Direction face, MultiblockStructure structure, boolean isParallels) {
+    public MultiblockRecipe parseAbleRecipe(BlockPos pos, Level level, Direction face, boolean isParallels) {
         for (MultiblockRecipe recipe : recipes()) {
-            if (recipe.canParseRecipe(pos, level, face, structure, isParallels)) {
+            if (recipe.canParseRecipe(pos, level, face, this, isParallels)) {
                 return recipe;
             }
         }

@@ -69,11 +69,11 @@ public interface IControllerBlockEntity {
         level.setBlock(pos, level.getBlockState(pos).setValue(IControllerBlock.FORMED, false), 3);
     }
 
-    default void work(Level level, BlockPos pos) {
+    default void work(Level level, BlockPos pos, HashMap<BlockPos, ArrayList<String>> bps) {
         level.setBlock(pos, level.getBlockState(pos).setValue(IControllerBlock.WORKING, true), 3);
     }
 
-    default void noWork(Level level, BlockPos pos) {
+    default void noWork(Level level, BlockPos pos, HashMap<BlockPos, ArrayList<String>> bps) {
         level.setBlock(pos, level.getBlockState(pos).setValue(IControllerBlock.WORKING, false), 3);
     }
 
@@ -83,6 +83,10 @@ public interface IControllerBlockEntity {
 
     default int getParseSpeed() {
         return 1;
+    }
+
+    default int getPlaySoundInterval() {
+        return 10;
     }
 
     default Component display() {
@@ -131,35 +135,34 @@ public interface IControllerBlockEntity {
                             (
                                     !MultiblockStructure.allStructures
                                             .getOrDefault(getFormedAs(), new EmptyStructure())
-                                            .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), false)
+                                            .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), true)
                                             .recipeId().isEmpty()
                             )
             ) {
                 setParsingRecipe(
                         MultiblockStructure.allStructures
                                 .getOrDefault(getFormedAs(), new EmptyStructure())
-                                .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), false)
+                                .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), true)
                                 .recipeId()
                 );
+
                 for (int i = 0; i < getParallels(); i++) {
                     if (!MultiblockStructure.allStructures
                             .getOrDefault(getFormedAs(), new EmptyStructure())
-                            .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), true)
+                            .parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), i == 0)
                             .recipeId()
                             .isEmpty()) {
-                        MultiblockStructure.allStructures
-                                .getOrDefault(getFormedAs(), new EmptyStructure()).parseAbleRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), true)
-                                .inputRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), i == 0);
+                        MultiblockRecipe.allRecipes.getOrDefault(getParsingRecipe(), new EmptyRecipe()).inputRecipe(pos, level, state.getValue(IControllerBlock.FACING), MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()), i == 0);
                         setRecipeParallels(getRecipeParallels() + 1);
                     } else break;
                 }
             }
 
             if (!getParsingRecipe().isEmpty()) {
-                work(level, pos);
+                work(level, pos, MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).blocks());
                 setTick(getTick() + getParseSpeed());
             } else {
-                noWork(level, pos);
+                noWork(level, pos, MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).blocks());
                 setTick(0);
             }
 
@@ -178,13 +181,13 @@ public interface IControllerBlockEntity {
                 setRecipeParallels(0);
             }
         } else {
-            noWork(level, pos);
+            noWork(level, pos, MultiblockStructure.allStructures.getOrDefault(getFormedAs(), new EmptyStructure()).blocks());
             setTick(0);
             setRecipeParallels(0);
         }
 
         // 2. Sound
-        if (getTick() % 10 == 1) {
+        if (getTick() % getPlaySoundInterval() == 1) {
             level.playSound(
                     null,
                     pos.getX() + 0.5,
