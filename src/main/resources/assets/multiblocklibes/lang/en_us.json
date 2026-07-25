@@ -19,5 +19,7 @@
     "key.multiblock.structure_view": "Multiblock Structure - View",
     "key.multiblockes.recipe": "Multiblock Recipe",
     "key.multiblockes.pls_destory": "Please destroy the block located at the following position:",
-    "key.multiblockes.layer": "Layer:"
+    "key.multiblockes.layer": "Layer:",
+    "key.multiblockes.chance": "Chance: ",
+    "key.multiblockes.once": "Only progress once in multi-parallels recipe"
 }

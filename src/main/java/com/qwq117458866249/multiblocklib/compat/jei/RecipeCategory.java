@@ -9,13 +9,17 @@ import com.qwq117458866249.multiblocklib.common.recipes.json.MultiblockJsonRecip
 import com.qwq117458866249.multiblocklib.util.Info;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -76,7 +80,16 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
         AtomicInteger output = new AtomicInteger();
 
         requirements.forEach(r -> {
+            ChanceToolTip chanceToolTip = new ChanceToolTip();
+            DetectOnceTooltip detectOnceTooltip = new DetectOnceTooltip();
+
             if (r instanceof ItemRecipeRequirement requirement) {
+                if (requirement.detectOnce) detectOnceTooltip.parse();
+                if (requirement.chance < 1) {
+                    chanceToolTip.parse();
+                    chanceToolTip.setPercent(chanceToolTip.percent);
+                }
+
                 if (requirement.isTag) {
                     ArrayList<ItemStack> stacks = new ArrayList<>();
                     BuiltInRegistries.ITEM.stream()
@@ -86,22 +99,34 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
                                 if (!item.equals(Items.AIR)) stacks.add(new ItemStack(item, requirement.count));
                             });
                     builder.addInputSlot(0 + input.get() % 3 * 20, 12 + input.get() / 3 * 20)
-                            .addItemStacks(stacks);
+                            .addItemStacks(stacks)
+                            .addRichTooltipCallback(chanceToolTip)
+                            .addRichTooltipCallback(detectOnceTooltip);
                     input.getAndIncrement();
                 } else {
                     if (requirement.item.equals(Items.AIR)) return;
                     if (!requirement.isOutput) {
                         builder.addInputSlot(0 + input.get() % 3 * 20, 12 + input.get() / 3 * 20)
-                                .add(new ItemStack(requirement.item, requirement.count));
+                                .add(new ItemStack(requirement.item, requirement.count))
+                                .addRichTooltipCallback(chanceToolTip)
+                                .addRichTooltipCallback(detectOnceTooltip);
                         input.getAndIncrement();
                     } else {
                         builder.addOutputSlot(82 + output.get() % 3 * 20, 12 + output.get() / 3 * 20)
-                                .add(new ItemStack(requirement.item, requirement.count));
+                                .add(new ItemStack(requirement.item, requirement.count))
+                                .addRichTooltipCallback(chanceToolTip)
+                                .addRichTooltipCallback(detectOnceTooltip);
                         output.getAndIncrement();
                     }
                 }
             }
             if (r instanceof FluidRecipeRequirement requirement) {
+                if (requirement.detectOnce) detectOnceTooltip.parse();
+                if (requirement.chance < 1) {
+                    chanceToolTip.parse();
+                    chanceToolTip.setPercent(chanceToolTip.percent);
+                }
+
                 if (requirement.isTag) {
                     ArrayList<FluidStack> stacks = new ArrayList<>();
                     BuiltInRegistries.FLUID.stream()
@@ -110,18 +135,24 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
                             .forEach(fluid -> stacks.add(new FluidStack(fluid, requirement.count)));
                     builder.addInputSlot(0 + input.get() % 3 * 20, 12 + input.get() / 3 * 20)
                             .addIngredients(NeoForgeTypes.FLUID_STACK, stacks)
-                            .setFluidRenderer(1, false, 18, 18);
+                            .setFluidRenderer(1, false, 18, 18)
+                            .addRichTooltipCallback(chanceToolTip)
+                            .addRichTooltipCallback(detectOnceTooltip);
                     input.getAndIncrement();
                 } else {
                     if (!requirement.isOutput) {
                         builder.addInputSlot(0 + input.get() % 3 * 20, 12 + input.get() / 3 * 20)
                                 .addIngredients(NeoForgeTypes.FLUID_STACK, List.of(new FluidStack(requirement.fluid, requirement.count)))
-                                .setFluidRenderer(1, false, 18, 18);
+                                .setFluidRenderer(1, false, 18, 18)
+                                .addRichTooltipCallback(chanceToolTip)
+                                .addRichTooltipCallback(detectOnceTooltip);
                         input.getAndIncrement();
                     } else {
                         builder.addOutputSlot(82 + output.get() % 3 * 20, 12 + output.get() / 3 * 20)
                                 .addIngredients(NeoForgeTypes.FLUID_STACK, List.of(new FluidStack(requirement.fluid, requirement.count)))
-                                .setFluidRenderer(1, false, 18, 18);
+                                .setFluidRenderer(1, false, 18, 18)
+                                .addRichTooltipCallback(chanceToolTip)
+                                .addRichTooltipCallback(detectOnceTooltip);
                         output.getAndIncrement();
                     }
                 }
@@ -153,5 +184,40 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
                 line.getAndIncrement();
             }
         });
+    }
+
+    public static class ChanceToolTip implements IRecipeSlotRichTooltipCallback {
+        public int percent = 0;
+        public boolean parse = false;
+
+        @Override
+        public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
+            if (parse) {
+                tooltip.add(Component.translatable("key.multiblockes.chance").append("" + percent).append("%").withStyle(ChatFormatting.DARK_GRAY));
+            }
+        }
+
+        public void parse() {
+            this.parse = true;
+        }
+
+        public void setPercent(int percent) {
+            this.percent = percent;
+        }
+    }
+
+    public static class DetectOnceTooltip implements IRecipeSlotRichTooltipCallback {
+        public boolean parse = false;
+
+        @Override
+        public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
+            if (parse) {
+                tooltip.add(Component.translatable("key.multiblockes.once").withStyle(ChatFormatting.DARK_GRAY));
+            }
+        }
+
+        public void parse() {
+            this.parse = true;
+        }
     }
 }

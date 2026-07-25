@@ -19,5 +19,7 @@
     "key.multiblock.structure_view": "多方块结构预览",
     "key.multiblockes.recipe": "多方块配方",
     "key.multiblockes.pls_destory": "请挖掘掉位于以下坐标的方块：",
-    "key.multiblockes.layer": "层数："
+    "key.multiblockes.layer": "层数：",
+    "key.multiblockes.chance": "产出几率：",
+    "key.multiblockes.once": "在多线程配方中只消耗一次"
 }

@@ -15,12 +15,12 @@ import java.util.HashMap;
 public abstract class RecipeRequirement {
     public final boolean isOutput;
 
-    public RecipeRequirement setChance(int value) {
+    public RecipeRequirement setChance(double value) {
         chance = value;
         return this;
     }
 
-    protected double chance = ((Number) 1).doubleValue();
+    public double chance = ((Number) 1).doubleValue();
 
     public RecipeRequirement(IOMode io) {
         this.isOutput = io.equals(IOMode.OUTPUT);
@@ -54,14 +54,22 @@ public abstract class RecipeRequirement {
     public static final HashMap<String, AbstractCreator> allRecipeRequirements = new HashMap<>();
 
     public static RecipeRequirement fromJson(JsonObject json) {
+        RecipeRequirement requirement = allRecipeRequirements.get(json.get("id").getAsString()).get(json.get("property").getAsJsonArray().asList().toArray());
+
         try {
             try {
                 if (json.get("once").getAsBoolean()) {
-                    return allRecipeRequirements.get(json.get("id").getAsString()).get(json.get("property").getAsJsonArray().asList().toArray()).setDetectOnce();
+                    requirement.setDetectOnce();
                 }
             } catch (Exception _) {
             }
-            return allRecipeRequirements.get(json.get("id").getAsString()).get(json.get("property").getAsJsonArray().asList().toArray());
+            try {
+                if (json.get("chance").getAsDouble() > 0 && json.get("chance").getAsDouble() <= 1) {
+                    requirement.setChance(json.get("chance").getAsDouble());
+                }
+            } catch (Exception _) {
+            }
+            return requirement;
         } catch (Exception _) {
             return new DescRecipeRequirement(IOMode.BOTH, Component.empty());
         }
