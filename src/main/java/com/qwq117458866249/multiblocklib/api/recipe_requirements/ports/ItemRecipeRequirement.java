@@ -53,11 +53,11 @@ public class ItemRecipeRequirement extends RecipeRequirement {
             if (port != null) {
                 port.forEach(jsonElement -> {
                     if (jsonElement.getAsString().charAt(0) == '#') {
-                        if (level.getBlockState(eachPos).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(jsonElement.getAsString()))))) {
+                        if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(jsonElement.getAsString()))))) {
                             availablePort.set(true);
                         }
                     } else {
-                        if (level.getBlockState(eachPos).is(BuiltInRegistries.BLOCK.getValue(Identifier.parse(jsonElement.getAsString())))) {
+                        if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(BuiltInRegistries.BLOCK.getValue(Identifier.parse(jsonElement.getAsString())))) {
                             availablePort.set(true);
                         }
                     }
@@ -158,7 +158,7 @@ public class ItemRecipeRequirement extends RecipeRequirement {
                 }
 
                 if (
-                        level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof ItemPortBlockEntity portEntity && portEntity.ioMode.equals(IOMode.OUTPUT) &&
+                        level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof ItemPortBlockEntity portEntity && (!portEntity.ioMode.equals(IOMode.INPUT)) &&
                                 (port == null || availablePort.get())
                 ) {
                     try (Transaction transaction = Transaction.open(rtTransaction)) {

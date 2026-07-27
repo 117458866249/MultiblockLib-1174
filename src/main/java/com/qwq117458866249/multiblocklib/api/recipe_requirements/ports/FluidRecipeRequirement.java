@@ -49,9 +49,24 @@ public class FluidRecipeRequirement extends RecipeRequirement {
         AtomicInteger waitForProgress = new AtomicInteger(count);
 
         structure.blocks().forEach((eachPos, _) -> {
+            AtomicBoolean availablePort = new AtomicBoolean(false);
+            if (port != null) {
+                port.forEach(jsonElement -> {
+                    if (jsonElement.getAsString().charAt(0) == '#') {
+                        if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(TagKey.create(BuiltInRegistries.BLOCK.key(), Identifier.parse(Util.getPath(jsonElement.getAsString()))))) {
+                            availablePort.set(true);
+                        }
+                    } else {
+                        if (level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).is(BuiltInRegistries.BLOCK.getValue(Identifier.parse(jsonElement.getAsString())))) {
+                            availablePort.set(true);
+                        }
+                    }
+                });
+            }
+
             if (
                     level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof FluidPortBlockEntity portEntity && (!portEntity.ioMode.equals(IOMode.OUTPUT)) &&
-                            (port == null || level.getBlockState(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))).getBlock().equals(port))
+                            (port == null || availablePort.get())
             ) {
                 portEntity.handler.copyToList().forEach(eachStack -> {
                     if (
@@ -144,7 +159,7 @@ public class FluidRecipeRequirement extends RecipeRequirement {
                 }
 
                 if (
-                        level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof FluidPortBlockEntity portEntity && portEntity.ioMode.equals(IOMode.OUTPUT) &&
+                        level.getBlockEntity(Util.getAbsPos(pos, Util.getDirectionPos(eachPos, face))) instanceof FluidPortBlockEntity portEntity && (!portEntity.ioMode.equals(IOMode.INPUT)) &&
                                 (port == null || availablePort.get())
                 ) {
                     try (Transaction transaction = Transaction.open(rtTransaction)) {
