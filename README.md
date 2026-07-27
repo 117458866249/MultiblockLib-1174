@@ -359,7 +359,7 @@ Recipe requirements:
 ```json5
 {
     // How many blocks in Structure
-    "id": "right_count_blocks_structure_requirement",
+    "id": "right_count_blocks_recipe_requirement",
     "property": [
         ["modid:sth_block"],
         10
@@ -368,7 +368,7 @@ Recipe requirements:
 ```
 ```json5
 {
-    "id": "min_count_blocks_structure_requirement",
+    "id": "min_blocks_recipe_requirement",
     "property": [
         ["modid:sth_block"],
         10
@@ -377,7 +377,7 @@ Recipe requirements:
 ```
 ```json5
 {
-    "id": "max_count_blocks_structure_requirement",
+    "id": "max_blocks_recipe_requirement",
     "property": [
         ["modid:sth_block"],
         10
