@@ -201,8 +201,8 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
             this.parse = true;
         }
 
-        public void setPercent(int percent) {
-            this.percent = percent;
+        public void setPercent(double percent) {
+            this.percent = ((Number) (percent * 100)).intValue();
         }
     }
 
