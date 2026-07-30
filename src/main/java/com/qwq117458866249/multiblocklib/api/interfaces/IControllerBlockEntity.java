@@ -202,12 +202,12 @@ public interface IControllerBlockEntity {
 
         // 3. Dashboard
         setAllDisplays(level.getEntitiesOfClass(Display.TextDisplay.class, new AABB(
-                pos.getX() - 3,
-                pos.getY() - 3,
-                pos.getZ() - 3,
-                pos.getX() + 3,
-                pos.getY() + 3,
-                pos.getZ() + 3
+                pos.getX() + Util.getDirectionalPos(state.getValue(IControllerBlock.FACING)).getX(),
+                pos.getY() + 1 + Util.getDirectionalPos(state.getValue(IControllerBlock.FACING)).getY(),
+                pos.getZ() + Util.getDirectionalPos(state.getValue(IControllerBlock.FACING)).getZ(),
+                pos.getX() + 1 + Util.getDirectionalPos(state.getValue(IControllerBlock.FACING)).getX(),
+                pos.getY() + 2 + Util.getDirectionalPos(state.getValue(IControllerBlock.FACING)).getY(),
+                pos.getZ() + 1 + Util.getDirectionalPos(state.getValue(IControllerBlock.FACING)).getZ()
         )));
 
         if (getAllDisplays().isEmpty()) {
