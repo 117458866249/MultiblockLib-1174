@@ -87,7 +87,7 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
                 if (requirement.detectOnce) detectOnceTooltip.parse();
                 if (requirement.chance < 1) {
                     chanceToolTip.parse();
-                    chanceToolTip.setPercent(chanceToolTip.percent);
+                    chanceToolTip.setPercent(requirement.chance);
                 }
 
                 if (requirement.isTag) {
@@ -124,7 +124,7 @@ public class RecipeCategory implements IRecipeCategory<MultiblockJsonRecipe> {
                 if (requirement.detectOnce) detectOnceTooltip.parse();
                 if (requirement.chance < 1) {
                     chanceToolTip.parse();
-                    chanceToolTip.setPercent(chanceToolTip.percent);
+                    chanceToolTip.setPercent(requirement.chance);
                 }
 
                 if (requirement.isTag) {
