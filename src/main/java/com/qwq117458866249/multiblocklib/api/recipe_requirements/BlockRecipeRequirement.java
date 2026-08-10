@@ -62,6 +62,7 @@ public class BlockRecipeRequirement extends RecipeRequirement {
                 }
             }
         });
+
         if (ableToReturn.get()) {
             return ParseResult.SUCCESS;
         } else {

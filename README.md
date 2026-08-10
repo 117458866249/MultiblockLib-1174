@@ -349,8 +349,6 @@ Recipe requirements:
 {
     "id": "desc_recipe_requirement",
     "property": [
-        // When execute, input or output!
-        "input",
         "tran",
         "key.modid.sukablyat"
     ]
