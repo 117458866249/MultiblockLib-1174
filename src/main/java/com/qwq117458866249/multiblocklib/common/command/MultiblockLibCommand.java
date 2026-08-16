@@ -12,7 +12,9 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -39,16 +41,16 @@ public class MultiblockLibCommand {
                                                         BlockPos cornerII = BlockPosArgument.getBlockPos(ctx, "cornerII");
                                                         String fileName = StringArgumentType.getString(ctx, "fileName");
                                                         String before = """
-{
-    "type": "multiblocklibes:structure",
-    "structure_id": ,
-    "controller_id": ,
-    "pattern": [""";
+                                                                {
+                                                                    "type": "multiblocklibes:structure",
+                                                                    "structure_id": ,
+                                                                    "controller_id": ,
+                                                                    "pattern": [""";
                                                         String after = """
-    
-    ],
-    "requirements": []
-}""";
+                                                                
+                                                                    ],
+                                                                    "requirements": []
+                                                                }""";
                                                         BlockPos temp;
 
                                                         for (int i = Math.min(cornerI.getX(), cornerII.getX()); i <= Math.max(cornerI.getX(), cornerII.getX()); i++) {
@@ -81,7 +83,9 @@ public class MultiblockLibCommand {
         ).then(
                 Commands.literal("aSimpleBp").then(
                         Commands.argument("bp", BlockPosArgument.blockPos()).executes(ctx -> {
-                            ctx.getSource().sendSuccess(() -> Component.literal(BlockPosArgument.getBlockPos(ctx, "bp").toShortString()), true);
+                            ctx.getSource().sendSuccess(() -> Component.literal(BlockPosArgument.getBlockPos(ctx, "bp").toShortString()).withStyle(style ->
+                                style.withClickEvent(new ClickEvent.CopyToClipboard(BlockPosArgument.getBlockPos(ctx, "bp").toShortString())).withHoverEvent(new HoverEvent.ShowText(Component.literal("Copy")))
+                            ), true);
                             return 1;
                         })
                 )
